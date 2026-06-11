@@ -1,0 +1,2258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ExploreMyWay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Liu+Jian+Mao+Cao&family=Zhi+Mang+Xing&family=Noto+Serif+SC:wght@400;600;700;900&display=block" rel="stylesheet">
+<!-- CDN scripts loaded at bottom of body -->
+<style>
+/* ========================================
+   CSS Variables & Reset
+   ======================================== */
+:root {
+  --bg: #f0f3f7;
+  --card-bg: #ffffff;
+  --text: #1e293b;
+  --text-secondary: #64748b;
+  --accent: #3a6b8c;
+  --accent-warm: #d4794a;
+  --accent2: #5b8c9e;
+  --accent3: #7a9a6e;
+  --border: #dfe3e8;
+  --shadow: 0 2px 12px rgba(0,0,0,0.06);
+  --radius: 16px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+/* ========================================
+   Layout
+   ======================================== */
+.container {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 20px 16px 60px;
+}
+/* ========================================
+   Hero Section — Full viewport, mountain image + brush slogan
+   ======================================== */
+.hero {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-top: -20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+}
+/* ── Background image ── */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.hero-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+}
+/* ── Gradient overlay: fade bottom into page bg ── */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(to bottom,
+    rgba(240,243,247,0.0) 0%,
+    rgba(240,243,247,0.0) 50%,
+    rgba(240,243,247,0.75) 82%,
+    rgba(240,243,247,0.95) 100%);
+}
+/* ── Text content layer ── */
+.hero-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 640px;
+  padding: 0 24px;
+  margin-top: 8vh;
+}
+/* ── Brush slogan typography ── */
+.hero-lead {
+  font-family: 'Noto Serif SC', 'PingFang SC', 'Microsoft YaHei', serif;
+  font-size: 28px;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: 6px;
+  margin: 0;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.35);
+}
+.hero-word {
+  font-family: 'Liu Jian Mao Cao', 'PingFang SC', 'Microsoft YaHei', cursive;
+  line-height: 1.1;
+  margin: 0;
+  user-select: none;
+}
+.hero-word-main {
+  font-size: 120px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 10px;
+  margin: -8px 0;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+}
+.hero-word-sub {
+  font-family: 'Zhi Mang Xing', 'PingFang SC', 'Microsoft YaHei', cursive;
+  font-size: 56px;
+  font-weight: 700;
+  color: #e8c060;
+  letter-spacing: 6px;
+  margin: -6px 0;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+/* ── Tagline ── */
+.hero-tagline {
+  font-family: 'Noto Serif SC', 'PingFang SC', 'Microsoft YaHei', serif;
+  font-size: 14px;
+  color: rgba(255,255,255,0.7);
+  letter-spacing: 3px;
+  margin: 24px 0 0;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+/* ── CTA Button ── */
+.hero .btn-hero {
+  display: inline-block;
+  margin-top: 32px;
+  padding: 16px 48px;
+  border-radius: 30px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: var(--transition);
+  letter-spacing: 2px;
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(58,107,140,0.3);
+}
+.hero .btn-hero:hover {
+  background: #2d5773;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 28px rgba(58,107,140,0.4);
+}
+/* ── Scroll hint ── */
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 2px;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  animation: hintPulse 2s ease-in-out infinite;
+}
+@keyframes hintPulse {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.7; }
+}
+/* ── Generic button styles (used elsewhere) ── */
+.btn {
+  display: inline-block;
+  padding: 14px 40px;
+  border-radius: 28px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: var(--transition);
+  text-decoration: none;
+  letter-spacing: 0.5px;
+}
+.btn-primary {
+  background: var(--accent-warm);
+  color: #fff;
+}
+.btn-primary:hover { background: #b85d2f; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(212,121,74,0.35); }
+.btn-outline {
+  background: var(--card-bg);
+  color: var(--accent);
+  border: 2px solid var(--accent);
+}
+.btn-outline:hover { background: #f0f5f8; }
+/* ========================================
+   Progress Bar
+   ======================================== */
+.progress-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--bg);
+  padding: 12px 0;
+}
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+.progress-bar {
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+/* ========================================
+   Question Cards
+   ======================================== */
+#questions-section { display: none; }
+.question-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 32px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+  border: 2px solid transparent;
+  transition: var(--transition);
+}
+.question-card.answered { border-color: #d4e8d0; background: #fafff9; }
+.question-card .q-num {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+.question-card .q-text {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+.options { display: flex; flex-direction: column; gap: 12px; }
+.option {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 16px 20px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  background: var(--card-bg);
+  cursor: pointer;
+  font-size: 17px;
+  transition: var(--transition);
+  color: var(--text);
+  line-height: 1.5;
+}
+.option:hover { border-color: var(--accent); background: #f0f5f8; }
+.option.selected {
+  border-color: var(--accent);
+  background: #eef3f8;
+  font-weight: 500;
+}
+/* ========================================
+   Q18 Special Styles — Enhanced Spinner
+   ======================================== */
+.q18-card {
+  background: linear-gradient(135deg, #f8fafb, #f2f5f9);
+  border: 2px dashed var(--accent);
+  transition: box-shadow 0.4s ease;
+}
+.q18-card.pulse-focus {
+  box-shadow: 0 0 0 6px rgba(58,107,140,0.2), 0 0 24px rgba(58,107,140,0.12);
+}
+.spinner-area {
+  text-align: center;
+  padding: 16px 0 8px;
+  position: relative;
+}
+/* ── Pointer: large arrow above the wheel ── */
+.spinner-pointer {
+  width: 0; height: 0;
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+  border-top: 28px solid var(--accent-warm);
+  margin: 0 auto 2px;
+  filter: drop-shadow(0 2px 6px rgba(212,121,74,0.5));
+  position: relative;
+  z-index: 5;
+  animation: pointerPulse 2s ease-in-out infinite;
+}
+@keyframes pointerPulse {
+  0%, 100% { filter: drop-shadow(0 2px 6px rgba(212,121,74,0.5)); }
+  50% { filter: drop-shadow(0 2px 12px rgba(212,121,74,0.75)); }
+}
+/* ── Wheel ── */
+.spinner-wheel {
+  width: 150px; height: 150px;
+  border-radius: 50%;
+  background: conic-gradient(var(--accent) 0deg 120deg, var(--accent-warm) 120deg 240deg, var(--accent3) 240deg 360deg);
+  margin: 4px auto 16px;
+  display: flex;
+  align-items: center; justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12), 0 0 0 4px rgba(255,255,255,0.6);
+  position: relative;
+  transition: filter 0.15s ease;
+}
+.spinner-wheel.spinning { transition: transform 7.5s cubic-bezier(0.12, 0.55, 0.15, 1); }
+/* Center hub */
+.spinner-wheel::after {
+  content: '';
+  position: absolute;
+  width: 40px; height: 40px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+  z-index: 3;
+}
+/* ── Segment labels (rotate with wheel, centered in each 120° slice) ── */
+.seg-label {
+  position: absolute; z-index: 2;
+  font-size: 18px; font-weight: 800;
+  color: rgba(255,255,255,0.9);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  pointer-events: none;
+}
+.seg-a { top: 32px; right: 34px; }       /* 0-120° segment center (~60°) */
+.seg-b { bottom: 32px; left: 50%; transform: translateX(-50%); } /* 120-240° center (180°) */
+.seg-c { top: 32px; left: 34px; }         /* 240-360° segment center (~300°) */
+/* ── Winning segment glow ── */
+/* Winning segment glows — brighten winner, dim others */
+.spinner-wheel.result-a { background: conic-gradient(#4d85ad 0deg 120deg, #b87040 120deg 240deg, #6b8a5f 240deg 360deg); }
+.spinner-wheel.result-b { background: conic-gradient(#2d5773 0deg 120deg, #e89060 120deg 240deg, #6b8a5f 240deg 360deg); }
+.spinner-wheel.result-c { background: conic-gradient(#2d5773 0deg 120deg, #b87040 120deg 240deg, #8dae80 240deg 360deg); }
+
+.spin-btn {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 10px 32px;
+  border-radius: 22px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 15px; font-weight: 700;
+  transition: var(--transition);
+  letter-spacing: 0.5px;
+}
+.spin-btn:hover { background: #2d5773; transform: scale(1.04); }
+.spin-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.spin-btn.breathe {
+  animation: btnBreathe 0.8s ease-in-out 3;
+}
+@keyframes btnBreathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+.spin-result {
+  margin-top: 12px;
+  font-size: 15px; font-weight: 600;
+  color: var(--accent);
+  min-height: 22px;
+}
+.spin-result .result-big {
+  display: block;
+  font-size: 22px; font-weight: 800;
+  animation: resultBounce 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+@keyframes resultBounce {
+  0% { transform: scale(0); opacity: 0; }
+  60% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.spin-result .result-desc {
+  display: block;
+  font-size: 13px; font-weight: 400;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+/* ========================================
+   Submit Button
+   ======================================== */
+.submit-wrap {
+  text-align: center;
+  padding: 20px 0;
+}
+.submit-wrap .btn-primary {
+  padding: 16px 56px;
+  font-size: 18px;
+}
+.submit-wrap .btn-primary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+/* ========================================
+   Results Section — Carousel
+   ======================================== */
+#results-section { display: none; }
+
+/* ----- compact header ----- */
+.results-header {
+  text-align: center;
+  padding: 10px 0 2px;
+}
+.results-header h2 {
+  font-size: 22px; font-weight: 700; margin-bottom: 4px;
+}
+.results-header .summary-text {
+  font-size: 15px; color: var(--text-secondary);
+  max-width: 380px; margin: 0 auto; line-height: 1.5;
+}
+
+/* ----- dimension strip (ultra-compact, 1-row) ----- */
+.dim-strip {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  padding: 4px 14px;
+  margin: 2px 0 0;
+  flex-wrap: wrap;
+}
+.dim-item {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 13px; color: var(--text-secondary);
+}
+.dim-item .dim-bar {
+  width: 48px; height: 4px;
+  background: #e8e3dd; border-radius: 2px; overflow: hidden;
+}
+.dim-item .dim-fill {
+  height: 100%; background: var(--accent); border-radius: 2px;
+  transition: width 0.5s ease;
+}
+
+/* ===== Carousel ===== */
+.carousel-wrap {
+  position: relative; overflow: hidden; touch-action: pan-y;
+}
+.carousel-track {
+  display: flex;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.carousel-slide {
+  flex: 0 0 100%; padding: 0 2px;
+}
+
+/* ----- Emoji Banner (horizontal strip, compact) ----- */
+.emoji-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 12px 16px;
+  margin: 0 8px;
+  background: var(--card-bg);
+  border-radius: 14px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+}
+.emoji-banner .main-emoji {
+  font-size: 52px; line-height: 1;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));
+}
+.emoji-banner .prop-row {
+  display: flex; gap: 10px; font-size: 26px; line-height: 1;
+  opacity: 0.7;
+}
+
+/* ----- Profession identity (rank + name + scope) ----- */
+.prof-id {
+  text-align: center; padding: 2px 0 4px;
+}
+.prof-id .rank-badge {
+  display: inline-block;
+  font-size: 13px; font-weight: 700; letter-spacing: 1px;
+  padding: 3px 12px; border-radius: 20px; margin-bottom: 6px;
+}
+.prof-id .rank-badge.r1 { color:var(--accent-warm); background:#fdf5f0; }
+.prof-id .rank-badge.r2 { color:var(--accent); background:#f0f5f8; }
+.prof-id .rank-badge.r3 { color:var(--accent3); background:#f4f7ef; }
+.prof-id .major-name {
+  font-size: 26px; font-weight: 700; margin-bottom: 2px;
+}
+.prof-id .major-scope {
+  font-size: 14px; color: var(--text-secondary);
+}
+
+/* ----- Info card (match reason + intro + examples) ----- */
+.info-card {
+  background: var(--card-bg); border-radius: var(--radius);
+  padding: 12px 16px; margin: 0 8px;
+  box-shadow: var(--shadow);
+}
+.info-card .match-reason {
+  font-size: 16px; color: var(--accent);
+  padding: 8px 12px; background: #f0f5f8; border-radius: 8px;
+  line-height: 1.5; margin-bottom: 8px;
+}
+.info-card .major-intro {
+  font-size: 16px; line-height: 1.6; margin-bottom: 6px;
+}
+.info-card .major-examples h4 {
+  font-size: 14px; color: var(--text-secondary); margin-bottom: 2px;
+}
+.info-card .major-examples ul { list-style:none; padding:0; }
+.info-card .major-examples li {
+  font-size: 15px; padding: 2px 0 2px 16px; position:relative; line-height: 1.5;
+}
+.info-card .major-examples li::before {
+  content:'▸'; position:absolute; left:0; color:var(--accent); font-size:11px;
+}
+
+/* ----- Share + Nav ----- */
+.slide-share {
+  text-align: center; padding: 6px 0 2px;
+}
+.slide-share .btn-share {
+  display: inline-block; padding: 10px 28px; border-radius: 22px;
+  font-size: 16px; font-weight: 600; cursor: pointer; border: none;
+  background: var(--accent); color: #fff;
+  transition: var(--transition); letter-spacing: 0.5px;
+}
+.slide-share .btn-share:hover { background:#2d5773; transform:translateY(-1px); box-shadow:0 4px 14px rgba(58,107,140,0.25); }
+
+.carousel-nav {
+  display: flex; align-items: center; justify-content: center;
+  gap: 16px; padding: 6px 0 2px;
+}
+.carousel-arrow {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 2px solid var(--border); background: var(--card-bg);
+  cursor: pointer; font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  transition: var(--transition); color: var(--text); user-select: none;
+}
+.carousel-arrow:hover { border-color:var(--accent); color:var(--accent); }
+.carousel-dots { display:flex; gap:8px; }
+.carousel-dot {
+  width:8px; height:8px; border-radius:50%;
+  background:var(--border); cursor:pointer; transition:var(--transition);
+}
+.carousel-dot.active { background:var(--accent); transform:scale(1.3); }
+
+/* ----- Disclaimer ----- */
+.disclaimer {
+  margin-top: 16px; padding: 12px 16px;
+  background: #f5f7fa; border-radius: 10px;
+  font-size: 13px; color: var(--text-secondary);
+  line-height: 1.55; border: 1px solid var(--border);
+}
+.disclaimer strong { color: var(--accent); }
+/* Poster capture area (hidden from view, used for html2canvas) */
+#poster-capture {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  width: 375px;
+  background: linear-gradient(160deg, #f5f7fa 0%, #eef2f6 40%, #f0f3f7 100%);
+  padding: 24px 18px 18px;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  color: #1e293b;
+}
+#poster-capture .p-header {
+  text-align: center;
+  margin-bottom: 14px;
+}
+#poster-capture .p-header .p-icon {
+  font-size: 20px;
+  letter-spacing: 2px;
+  margin-bottom: 2px;
+}
+#poster-capture .p-header .p-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #1e293b;
+}
+#poster-capture .p-header .p-subtitle {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+/* ── Emoji banner (matching results page style) ── */
+#poster-capture .p-emoji-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 10px 14px;
+  background: #ffffff;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+#poster-capture .p-emoji-row .p-main-emoji {
+  font-size: 44px; line-height: 1;
+}
+#poster-capture .p-emoji-row .p-props {
+  display: flex; gap: 8px; font-size: 22px; line-height: 1; opacity: 0.7;
+}
+
+/* ── Major identity ── */
+#poster-capture .p-identity {
+  text-align: center;
+  margin-bottom: 10px;
+}
+#poster-capture .p-rank {
+  display: inline-block;
+  font-size: 12px; font-weight: 700;
+  padding: 2px 10px; border-radius: 12px;
+  margin-bottom: 4px;
+}
+#poster-capture .p-rank.r1 { color:#d4794a; background:#fdf5f0; }
+#poster-capture .p-rank.r2 { color:#3a6b8c; background:#f0f5f8; }
+#poster-capture .p-rank.r3 { color:#7a9a6e; background:#f4f7ef; }
+#poster-capture .p-major-name {
+  font-size: 24px; font-weight: 700; margin-bottom: 2px;
+}
+#poster-capture .p-scope {
+  font-size: 12px; color: #64748b;
+}
+
+/* ── Info card ── */
+#poster-capture .p-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+#poster-capture .p-reason {
+  font-size: 13px; color: #3a6b8c;
+  background: #f0f5f8; border-radius: 8px;
+  padding: 8px 10px; margin-bottom: 8px;
+  line-height: 1.55;
+}
+#poster-capture .p-intro {
+  font-size: 13px; line-height: 1.6; margin-bottom: 6px; color: #334155;
+}
+#poster-capture .p-examples-title {
+  font-size: 11px; color: #94a3b8; margin-bottom: 2px;
+}
+#poster-capture .p-examples {
+  list-style: none; padding: 0; margin: 0;
+}
+#poster-capture .p-examples li {
+  font-size: 12px; padding: 2px 0 2px 14px; position: relative; line-height: 1.5; color: #475569;
+}
+#poster-capture .p-examples li::before {
+  content: '▸'; position: absolute; left: 0; color: #3a6b8c; font-size: 9px;
+}
+
+/* ── Dimension strip ── */
+#poster-capture .p-dims {
+  display: flex; justify-content: center; gap: 10px;
+  flex-wrap: wrap; padding: 4px 0; margin-bottom: 10px;
+}
+#poster-capture .p-dim-item {
+  display: flex; align-items: center; gap: 3px;
+  font-size: 10px; color: #94a3b8;
+}
+#poster-capture .p-dim-bar {
+  width: 36px; height: 3px;
+  background: #e8e3dd; border-radius: 2px; overflow: hidden;
+}
+#poster-capture .p-dim-fill {
+  height: 100%; background: #3a6b8c; border-radius: 2px;
+}
+
+/* ── Footer ── */
+#poster-capture .p-footer {
+  text-align: center;
+  border-top: 1px solid #e2e6eb;
+  padding-top: 10px;
+}
+#poster-capture .p-qr { margin: 10px auto 0; display: inline-block; }
+#poster-capture .p-qr-tip {
+  font-size: 10px; color: #b0b8c1; margin-top: 4px;
+}
+#poster-capture .p-email {
+  font-size: 11px; color: #94a3b8; margin-top: 2px;
+}
+/* ========================================
+   Responsive
+   ======================================== */
+@media (max-width: 480px) {
+  .hero { min-height: 100vh; }
+  .hero-content { padding: 0 16px; margin-top: 4vh; }
+  .hero-lead { font-size: 20px; letter-spacing: 4px; font-weight: 900; }
+  .hero-word-main { font-size: 72px; letter-spacing: 4px; }
+  .hero-word-sub { font-size: 40px; letter-spacing: 2px; }
+  .hero-tagline { font-size: 13px; letter-spacing: 2px; margin-top: 20px; }
+  .hero .btn-hero { font-size: 17px; padding: 14px 40px; margin-top: 24px; }
+  .hero-scroll-hint { bottom: 16px; font-size: 11px; }
+  /* Questions — enlarged for 1-2 card visibility */
+  .question-card { padding: 28px; margin-bottom: 16px; }
+  .question-card .q-num { font-size: 13px; margin-bottom: 8px; }
+  .question-card .q-text { font-size: 18px; line-height: 1.55; margin-bottom: 18px; }
+  .options { gap: 10px; }
+  .option { font-size: 16px; padding: 16px 18px; line-height: 1.5; }
+  /* Results */
+  .results-header h2 { font-size: 20px; }
+  .results-header .summary-text { font-size: 14px; }
+  .dim-strip { gap: 10px; padding: 4px 6px; }
+  .dim-item { font-size: 12px; }
+  .dim-item .dim-bar { width: 36px; }
+  .emoji-banner { gap: 12px; padding: 10px 14px; margin: 0 2px; }
+  .emoji-banner .main-emoji { font-size: 46px; }
+  .emoji-banner .prop-row { font-size: 22px; gap: 8px; }
+  .prof-id .rank-badge { font-size: 12px; }
+  .prof-id .major-name { font-size: 24px; }
+  .prof-id .major-scope { font-size: 13px; }
+  .info-card { padding: 12px 14px; margin: 0 2px; }
+  .info-card .match-reason { font-size: 15px; }
+  .info-card .major-intro { font-size: 15px; }
+  .info-card .major-examples h4 { font-size: 13px; }
+  .info-card .major-examples li { font-size: 14px; }
+  .slide-share .btn-share { font-size: 15px; padding: 10px 24px; }
+  .disclaimer { font-size: 13px; padding: 12px 14px; }
+  /* Q18 spinner mobile */
+  .spinner-wheel { width: 140px; height: 140px; }
+  .spinner-pointer { border-left-width: 14px; border-right-width: 14px; border-top-width: 24px; }
+  .seg-label { font-size: 16px; }
+  .seg-a { top: 26px; right: 28px; }
+  .seg-b { bottom: 26px; }
+  .seg-c { top: 26px; left: 28px; }
+  .spin-result .result-big { font-size: 20px; }
+}
+/* ========================================
+   Utility
+   ======================================== */
+.hidden { display: none !important; }
+.fade-in { animation: fadeIn 0.4s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ========================================
+   Page Transition Animations
+   ======================================== */
+/* ── Exit: fade out + lift up (hero / section leaving) ── */
+.section-exit {
+  animation: fadeOutUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  pointer-events: none;
+}
+@keyframes fadeOutUp {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-18px); }
+}
+
+/* ── Enter: fade in + slide up (section arriving) ── */
+.section-enter {
+  animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Card stagger: each card flies in from below ── */
+.question-card.stagger-in {
+  opacity: 0;
+  animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* ── Submit button pulse when unlocked ── */
+.btn-unlocked {
+  animation: unlockPop 0.6s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+@keyframes unlockPop {
+  0%   { transform: scale(0.92); opacity: 0.6; }
+  60%  { transform: scale(1.06); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== SVG Filters: Weathered Brush / Cracked Stone Effect ===== -->
+<svg style="position:absolute;width:0;height:0;" aria-hidden="true">
+  <defs>
+    <!-- Filter 1: rough eroded edges (苍裂·剥蚀) -->
+    <filter id="weathered-brush" x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="5" seed="3" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+      <feMorphology operator="erode" radius="0.3" in="rough" result="eroded"/>
+      <feBlend in="SourceGraphic" in2="eroded" mode="multiply"/>
+    </filter>
+    <!-- Filter 2: deeper cracks / stone inscription (苍裂·碑刻) -->
+    <filter id="weathered-crack" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="6" seed="7" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="6" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+      <feComponentTransfer in="rough">
+        <feFuncA type="linear" slope="1" intercept="0"/>
+      </feComponentTransfer>
+    </filter>
+  </defs>
+</svg>
+
+<div class="container">
+  <!-- ===== Hero — full viewport, mountain image + brush calligraphy ===== -->
+  <div class="hero" id="hero-section">
+    <div class="hero-bg">
+      <img src="hero-bg.png" alt="">
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-lead">不因少了一座</p>
+      <h1 class="hero-word hero-word-main">雪峰</h1>
+      <p class="hero-lead" style="margin-top:4px;">而影响你的</p>
+      <h2 class="hero-word hero-word-sub">志愿填报</h2>
+      <p class="hero-tagline">—— 一次认真的自我发现 ——</p>
+      <button class="btn-hero" onclick="startTest()">开始探索 ↑</button>
+    </div>
+    <div class="hero-scroll-hint">▼ 向上滑动开始</div>
+  </div>
+
+  <!-- ===== Progress ===== -->
+  <div class="progress-wrap hidden" id="progress-wrap">
+    <div class="progress-info">
+      <span id="progress-text">进度 0/18</span>
+      <span id="progress-hint"></span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  </div>
+
+  <!-- ===== Questions ===== -->
+  <div id="questions-section"></div>
+
+  <!-- ===== Submit ===== -->
+  <div class="submit-wrap hidden" id="submit-wrap">
+    <button class="btn btn-primary" id="submit-btn" disabled onclick="showResults()">查看我的专业推荐</button>
+    <p style="font-size:13px;color:var(--text-secondary);margin-top:8px" id="remaining-hint"></p>
+  </div>
+
+  <!-- ===== Results ===== -->
+  <div id="results-section"></div>
+</div>
+
+<!-- Hidden poster capture element -->
+<div id="poster-capture"></div>
+
+<script>
+// ============================================================
+// DATA: 12 Major Categories
+// ============================================================
+const MAJORS = [
+  {
+    id: 'cs',
+    name: '计算机类',
+    scope: '计算机科学、软件工程、人工智能、网络安全、物联网',
+    // Dimension profile: [抽象-具象, 物性-生命, 系统-细节, 创新-规范]
+    // negative = abstract/physical/systems/innovative
+    profile: [-3.5, -3, -2, -1.5],
+    intro: '计算机类专业研究如何用算法和系统解决各类问题，从手机App到超级计算机都离不开它。这个领域变化极快，永远有新东西可以学。',
+    examples: [
+      '你每天用的微信、抖音、支付宝，背后是成千上万行代码在运行',
+      'ChatGPT这样的人工智能对话，来自深度学习和自然语言处理技术',
+      '外卖骑手的路径规划、12306的抢票系统，都是计算机算法在调度'
+    ]
+  },
+  {
+    id: 'ee',
+    name: '电子信息类',
+    scope: '电子信息工程、通信工程、自动化、电气工程、光电信息',
+    profile: [-1.5, -2.5, -1, 0],
+    intro: '电子信息类专业研究电路、芯片、信号处理和通信技术，是智能硬件和通信网络的基础。你手机里的芯片、5G基站、卫星导航，都在这个范畴里。',
+    examples: [
+      '手机能同时打电话、上网、定位，靠的是射频芯片和信号处理技术',
+      '智能家居（小米/华为生态）里每个设备互通，背后是嵌入式系统和通信协议',
+      '高铁能精确停靠站台、自动调速，是自动控制系统的功劳'
+    ]
+  },
+  {
+    id: 'math',
+    name: '数学与统计类',
+    scope: '数学、统计学、数据科学、金融数学、信息与计算科学',
+    profile: [-4, -1, 0.5, 0.5],
+    intro: '数学类专业培养严密的逻辑推理和抽象建模能力。在当前大数据和AI时代，数学人才在金融、科技、互联网公司都非常抢手。',
+    examples: [
+      '银行的风控模型判断你是否能获得贷款，背后是统计学和概率论',
+      '推荐算法（抖音为什么总推你爱看的）底层是矩阵分解和优化理论',
+      '量化基金用数学模型自动交易股票，数学家是华尔街的香饽饽'
+    ]
+  },
+  {
+    id: 'physics',
+    name: '物理学类',
+    scope: '物理学、应用物理、核工程、声学、量子信息',
+    profile: [-4, -2, 0.5, -1],
+    intro: '物理学类探索自然世界最底层的规律，从量子纠缠到星系演化。物理学训练出的建模和数学能力在各个高精尖领域都有用武之地。',
+    examples: [
+      '芯片制造的极紫外光刻技术，本质上是在操控光的波长和干涉',
+      '医院里的CT、MRI（核磁共振），原理都是物理学家发现的',
+      '量子计算机用到了量子叠加和纠缠，物理学家正在把它从理论变成现实'
+    ]
+  },
+  {
+    id: 'chemistry',
+    name: '化学与化工类',
+    scope: '化学、应用化学、化学工程、高分子材料、能源化学',
+    profile: [0, 0.5, 1, 1],
+    intro: '化学与化工类专业研究物质的组成、结构、性质和转化。从新药研发到新能源电池，从化妆品到半导体材料，化学无处不在。',
+    examples: [
+      '电动汽车的锂电池能跑多远，取决于正负极材料和电解液的化学配方',
+      '防晒霜里的二氧化钛纳米颗粒，是化学工程师设计出来的',
+      '可口可乐的神秘配方、洗发水的去屑成分，都是化学调配的成果'
+    ]
+  },
+  {
+    id: 'bio',
+    name: '生物类',
+    scope: '生物科学、生物工程、生物信息学、生态学、食品科学',
+    profile: [0.5, 2, 1, -0.5],
+    intro: '生物类专业研究生命的奥秘，从DNA双螺旋到生态系统。基因编辑、mRNA疫苗、人造肉……生物技术在深刻改变医疗、农业和食品工业。',
+    examples: [
+      '新冠疫情中火速研发的mRNA疫苗，核心技术是分子生物学',
+      'DNA亲子鉴定和刑侦破案用的基因比对，原理来自生物信息学',
+      '人造肉（Beyond Meat）用植物蛋白模拟肉类口感，背后是食品生物技术'
+    ]
+  },
+  {
+    id: 'medicine',
+    name: '医学类',
+    scope: '临床医学、口腔医学、麻醉学、医学影像学、预防医学',
+    profile: [0, 4, 2, 2],
+    intro: '医学类专业培养诊断和治疗疾病的能力，需要对人体结构和功能有深入理解。医生是终身学习的职业，经验越丰富越有价值。',
+    examples: [
+      '外科医生做微创手术，通过几个小孔和腹腔镜屏幕完成复杂操作',
+      '影像科医生看CT/MRI片子判断肿瘤位置，类似"人体侦探"',
+      '麻醉医生在手术中精确控制药物剂量，让病人在安全中度过手术'
+    ]
+  },
+  {
+    id: 'pharmacy',
+    name: '药学类',
+    scope: '药学、药物制剂、中药学、临床药学、药事管理',
+    profile: [0, 2, 1.5, 1],
+    intro: '药学类专业研究药物的发现、制备、分析和应用。从天然产物中提取有效成分，到在实验室设计全新的分子结构，药学连接化学、生物和医学。',
+    examples: [
+      '阿司匹林最初来自柳树皮提取物，化学家搞清楚了有效成分并实现了人工合成',
+      '布洛芬止痛的原理是抑制体内的环氧化酶，减少致痛物质前列腺素的生成',
+      '中药颗粒剂把传统汤剂浓缩成即冲即饮的颗粒，是药物制剂技术的应用'
+    ]
+  },
+  {
+    id: 'mechanical',
+    name: '机械与能动类',
+    scope: '机械工程、能源与动力、车辆工程、航空航天、船舶工程',
+    profile: [2, -3, -1, 1],
+    intro: '机械与能动类专业研究一切"会动的东西"——从发动机到机器人，从汽车到火箭。这是最经典的工程学科，强调力学分析和结构设计。',
+    examples: [
+      '汽车发动机把汽油的化学能变成车轮的动能，热力学和流体力学在起作用',
+      '工业机器人手臂在工厂里焊接车身，精度达到0.1毫米，靠的是运动学和伺服控制',
+      'SpaceX的火箭回收着陆，涉及燃烧、导航、结构应力等多个机械工程分支'
+    ]
+  },
+  {
+    id: 'civil',
+    name: '土木与建筑类',
+    scope: '土木工程、建筑学、城乡规划、水利工程、交通工程',
+    profile: [1, -2, -2, 0.5],
+    intro: '土木与建筑类专业设计和建造人类生活的物理空间——房屋、桥梁、道路、水坝。它结合了技术计算和空间美学，成果是能亲眼看到、亲手触摸的。',
+    examples: [
+      '港珠澳大桥能抗8级地震和16级台风，结构力学计算保证了它的安全',
+      '你住的房子户型、采光、通风，是建筑师一笔一笔画出来的',
+      '城市地铁线路怎么走、站点设在哪，是交通工程和城市规划的交叉'
+    ]
+  },
+  {
+    id: 'materials',
+    name: '材料类',
+    scope: '材料科学与工程、冶金工程、无机非金属材料、高分子材料',
+    profile: [0, -1.5, 2, 0.5],
+    intro: '材料类专业研究如何设计和制备新材料，从半导体硅片到航空发动机叶片。几乎每一次技术革命都离不开材料突破——芯片制程、电池容量、航天耐热，都是材料问题。',
+    examples: [
+      '手机屏幕的钢化玻璃摔不碎，是化学强化改变了玻璃表面的应力分布',
+      '航空发动机涡轮叶片要在1600°C下不熔化，靠的是镍基高温合金',
+      '隐形牙套（隐适美）的材料透明又弹性好，是高分子材料的应用'
+    ]
+  },
+  {
+    id: 'env',
+    name: '环境与地理类',
+    scope: '环境科学、地理信息科学、测绘工程、地质工程、大气科学',
+    profile: [0, 0.5, -1, 1.5],
+    intro: '环境与地理类专业研究地球系统——大气、水、土壤、生态，以及人类活动对环境的影响。在气候变化和可持续发展的背景下，这个领域越来越重要。',
+    examples: [
+      '天气预报为什么越来越准？气象卫星+超级计算机+大气模型在背后工作',
+      '手机导航告诉你前方堵车，是GIS（地理信息系统）在实时分析交通数据',
+      '垃圾处理厂把厨余变成沼气和肥料，是环境工程在推动城市可持续发展'
+    ]
+  }
+];
+
+// Emoji mapping for each major: [main emoji, prop1, prop2, prop3, prop4]
+const MAJOR_EMOJIS = {
+  cs:        ['👨‍💻', '💻', '⌨️', '🖱️', '⚡'],
+  ee:        ['👨‍🔧', '📡', '🔌', '🛰️', '💡'],
+  math:      ['🧑‍🏫', '📐', '📊', '∑', '🔢'],
+  physics:   ['👨‍🔬', '⚛️', '🔭', '🌌', '💫'],
+  chemistry: ['🧑‍🔬', '🧪', '⚗️', '🧫', '🔥'],
+  bio:       ['🧑‍🌾', '🧬', '🔬', '🌱', '🐾'],
+  medicine:  ['👨‍⚕️', '🩺', '💊', '❤️', '🏥'],
+  pharmacy:  ['🧑‍⚕️', '💊', '🌿', '🧫', '⚕️'],
+  mechanical:['👷', '⚙️', '🔧', '🏗️', '🚗'],
+  civil:     ['👨‍🏭', '🏗️', '📏', '🏢', '🌉'],
+  materials: ['🧑‍🔬', '💎', '🔬', '🧱', '✨'],
+  env:       ['🧑‍🚀', '🌍', '🧭', '🌤️', '🌱']
+};
+
+// Maps dimension profile to readable description
+function describeProfile(profile) {
+  const parts = [];
+  if (profile[0] < -1.5) parts.push('抽象思维强，喜欢理论推导');
+  else if (profile[0] > 1.5) parts.push('动手能力强，喜欢实际操作');
+  if (profile[1] < -1.5) parts.push('对机械/电子/代码方向敏感');
+  else if (profile[1] > 1.5) parts.push('对生命/人体/生物方向敏感');
+  if (profile[2] < -1.5) parts.push('善于把握全局和系统架构');
+  else if (profile[2] > 1.5) parts.push('善于深入钻研细节');
+  if (profile[3] < -1.5) parts.push('喜欢创新和探索未知');
+  else if (profile[3] > 1.5) parts.push('喜欢遵循规范和成熟方法');
+  return parts.length > 0 ? parts.join('，') : '各方面均衡发展';
+}
+
+// ============================================================
+// DATA: 51 Question Bank
+// ============================================================
+// Dimensions: [abstract(+)=concrete, physical(+)=life, system(+)=detail, innovation(+)=convention]
+const QUESTION_BANK = [
+  // --- 学习偏好 (Q1-Q10) ---
+  {
+    id: 1,
+    text: '做数学题时，你更享受哪个过程？',
+    options: [
+      { text: '推导公式和定理，理解"为什么"', effects: [[0, -2]] },
+      { text: '套用公式快速算出正确答案', effects: [[0, 2]] },
+      { text: '用数学建模解决一个实际问题', effects: [[0, -1], [2, -1]] }
+    ]
+  },
+  {
+    id: 2,
+    text: '物理实验课上，你最感兴趣的是什么？',
+    options: [
+      { text: '测量数据、验证理论公式', effects: [[0, -2]] },
+      { text: '动手搭建和调试实验装置', effects: [[0, 2], [1, -1]] },
+      { text: '分析实验误差，写实验报告', effects: [[2, 1], [3, 1]] }
+    ]
+  },
+  {
+    id: 3,
+    text: '阅读一篇科普文章时，你更被什么吸引？',
+    options: [
+      { text: '宇宙起源、黑洞、量子力学的基础理论', effects: [[0, -3], [1, -1]] },
+      { text: '基因编辑、脑科学、癌症治疗新突破', effects: [[0, -1], [1, 3]] },
+      { text: '新材料的发明和工程奇迹（如超级工程）', effects: [[0, 1], [1, -2]] }
+    ]
+  },
+  {
+    id: 4,
+    text: '你更喜欢哪种学习方式？',
+    options: [
+      { text: '自己看书/看视频，按自己的节奏来', effects: [[2, 1], [3, -1]] },
+      { text: '跟着老师的课程体系一步步学', effects: [[3, 1]] },
+      { text: '和同学讨论、辩论，在交流中加深理解', effects: [[2, -1]] }
+    ]
+  },
+  {
+    id: 5,
+    text: '化学课上，哪个环节最让你兴奋？',
+    options: [
+      { text: '理解原子轨道、化学键的本质', effects: [[0, -2]] },
+      { text: '亲手做实验，看颜色变化和沉淀生成', effects: [[0, 2], [2, 1]] },
+      { text: '了解药物分子如何在人体内起作用', effects: [[1, 2], [0, 1]] }
+    ]
+  },
+  {
+    id: 6,
+    text: '如果有一整天自由时间学习，你会选择？',
+    options: [
+      { text: '深入搞懂一个一直困惑你的概念', effects: [[2, 2]] },
+      { text: '广泛浏览多个领域的知识，建立知识地图', effects: [[2, -2]] },
+      { text: '动手做一个项目/实验来验证所学', effects: [[0, 2]] }
+    ]
+  },
+  {
+    id: 7,
+    text: '生物课上，你对哪个话题最有感觉？',
+    options: [
+      { text: 'DNA复制、基因表达调控的分子机制', effects: [[0, -1], [1, 1], [2, 2]] },
+      { text: '人体器官系统的结构和功能', effects: [[1, 3]] },
+      { text: '生态系统、食物链和种群动态', effects: [[1, 1], [2, -1]] }
+    ]
+  },
+  {
+    id: 8,
+    text: '面对一道难题，你的第一反应是？',
+    options: [
+      { text: '先尝试自己从零推导', effects: [[0, -2], [3, -1]] },
+      { text: '查资料、看类似题目的解法', effects: [[3, 1]] },
+      { text: '拆解成几个小问题，逐个击破', effects: [[2, -1]] }
+    ]
+  },
+  {
+    id: 9,
+    text: '考完试后，你通常会？',
+    options: [
+      { text: '仔细分析错题，总结规律', effects: [[2, 1], [3, 1]] },
+      { text: '分数不错就行，不再回头看', effects: [[2, -1]] },
+      { text: '和同学对答案，讨论争议题', effects: [[3, -1]] }
+    ]
+  },
+  {
+    id: 10,
+    text: '你觉得最有意思的科目组合是？',
+    options: [
+      { text: '数学 + 物理', effects: [[0, -3], [1, -2]] },
+      { text: '生物 + 化学', effects: [[0, 1], [1, 2]] },
+      { text: '物理 + 信息技术', effects: [[0, -1], [1, -2], [2, -1]] },
+      { text: '数学 + 地理', effects: [[0, -1], [2, -1]] }
+    ]
+  },
+
+  // --- 问题解决风格 (Q11-Q20) ---
+  {
+    id: 11,
+    text: '修理一个不亮的台灯，你会怎么做？',
+    options: [
+      { text: '用万用表逐一检测电路，系统排查', effects: [[2, -1], [3, 1]] },
+      { text: '拆开看看，凭直觉判断哪里出问题', effects: [[0, 2], [3, -1]] },
+      { text: '先上网搜类似故障的解决方案', effects: [[3, 1]] }
+    ]
+  },
+  {
+    id: 12,
+    text: '规划一次旅行，你更在意什么？',
+    options: [
+      { text: '提前做好详细攻略，精确到每小时', effects: [[2, 1], [3, 1]] },
+      { text: '定个大方向，随走随逛', effects: [[2, -1], [3, -2]] },
+      { text: '找当地人推荐的冷门路线，不走寻常路', effects: [[3, -2]] }
+    ]
+  },
+  {
+    id: 13,
+    text: '解决一个复杂问题时，你倾向于？',
+    options: [
+      { text: '先画出整体框架，再填充细节', effects: [[2, -2]] },
+      { text: '从最关键的细节入手，以点带面', effects: [[2, 2]] },
+      { text: '先做出简单版本再逐步优化', effects: [[2, -1], [3, -1]] }
+    ]
+  },
+  {
+    id: 14,
+    text: '两个方案都有道理但结论相反，你怎么办？',
+    options: [
+      { text: '设计一个实验来验证哪个是对的', effects: [[0, -1], [3, -1]] },
+      { text: '查阅权威资料，看主流观点是什么', effects: [[3, 1]] },
+      { text: '两个方案各取所长，折中处理', effects: [[2, -1]] }
+    ]
+  },
+  {
+    id: 15,
+    text: '电脑出问题了，你怎么处理？',
+    options: [
+      { text: '自己查资料、摸索着修', effects: [[0, 2], [3, -1]] },
+      { text: '找懂行的朋友帮忙', effects: [[2, -1], [3, 1]] },
+      { text: '重装系统/恢复出厂设置，干净利落', effects: [[3, 1]] }
+    ]
+  },
+  {
+    id: 16,
+    text: '写作文时，你更擅长什么？',
+    options: [
+      { text: '构建严密的论证逻辑', effects: [[0, -2], [2, -1]] },
+      { text: '描绘生动的细节和场景', effects: [[2, 2], [0, 1]] },
+      { text: '提出新颖的角度和观点', effects: [[3, -2]] }
+    ]
+  },
+  {
+    id: 17,
+    text: '你更喜欢哪种任务？',
+    options: [
+      { text: '有明确的步骤和标准答案', effects: [[3, 1]] },
+      { text: '开放式的、需要自己探索方法', effects: [[3, -2], [0, -1]] },
+      { text: '需要动手操作、看到实际成果的', effects: [[0, 2]] }
+    ]
+  },
+  {
+    id: 18,
+    text: '发现一个规律/模式时，你的第一反应？',
+    options: [
+      { text: '试图理解它背后的原因和机制', effects: [[0, -2]] },
+      { text: '想到它在实际中的可能应用', effects: [[0, 2], [1, -1]] },
+      { text: '看看它是否能套用到其他场景', effects: [[2, -1]] }
+    ]
+  },
+  {
+    id: 19,
+    text: '做小组作业时，你更愿意？',
+    options: [
+      { text: '负责统筹分工、把握整体进度', effects: [[2, -2]] },
+      { text: '负责深入做最难的那个模块', effects: [[2, 2]] },
+      { text: '负责最后把关，检查细节和错误', effects: [[2, 1], [3, 1]] }
+    ]
+  },
+  {
+    id: 20,
+    text: '你想学一项新技能，更倾向于哪种方式？',
+    options: [
+      { text: '先把原理搞懂，再动手练', effects: [[0, -2], [3, 1]] },
+      { text: '直接上手干，在做的过程中学', effects: [[0, 2], [3, -1]] },
+      { text: '看别人怎么做，然后模仿改进', effects: [[3, 1]] }
+    ]
+  },
+
+  // --- 兴趣场景 (Q21-Q31) ---
+  {
+    id: 21,
+    text: '逛科技馆/博物馆时，你在哪个区域待最久？',
+    options: [
+      { text: '航天与物理互动展区', effects: [[0, -2], [1, -2]] },
+      { text: '人体与生命科学展区', effects: [[1, 3]] },
+      { text: '机器人与人工智能展区', effects: [[1, -3], [0, -1]] },
+      { text: '地球环境与生态展区', effects: [[1, 1]] }
+    ]
+  },
+  {
+    id: 22,
+    text: '看纪录片时，你更喜欢什么题材？',
+    options: [
+      { text: '宇宙探索、黑洞、时空旅行', effects: [[0, -3], [1, -1]] },
+      { text: '人体奥秘、疾病攻克、医疗创新', effects: [[1, 3]] },
+      { text: '工程奇迹、超级工厂、伟大建筑', effects: [[0, 2], [1, -2]] },
+      { text: '动物世界、自然生态、气候变化', effects: [[1, 1.5]] }
+    ]
+  },
+  {
+    id: 23,
+    text: '以下哪个场景最能激发你的好奇心？',
+    options: [
+      { text: '看到一段精妙的代码实现了一个酷炫的功能', effects: [[0, -2], [1, -2], [2, -1]] },
+      { text: '看到一个复杂的机械装置如何运作', effects: [[0, 1], [1, -2]] },
+      { text: '了解一种新药如何精准靶向癌细胞', effects: [[1, 3]] },
+      { text: '看到一座大桥如何跨越千米海峡', effects: [[0, 1], [2, -1]] }
+    ]
+  },
+  {
+    id: 24,
+    text: '如果你可以参加一个暑期项目，你会选？',
+    options: [
+      { text: '搭建一个能运行的App或网站', effects: [[0, -1], [1, -2], [2, -1]] },
+      { text: '在实验室里做生物/化学实验', effects: [[0, 1], [1, 1], [2, 1]] },
+      { text: '组装和调试一台无人机', effects: [[0, 2], [1, -2]] },
+      { text: '测绘你所在城市的一片区域', effects: [[0, 1], [2, -1]] }
+    ]
+  },
+  {
+    id: 25,
+    text: 'AI时代，你对哪个方向最感兴趣？',
+    options: [
+      { text: 'AI算法本身——神经网络怎么工作的', effects: [[0, -2], [2, 2]] },
+      { text: 'AI应用——用AI工具做出有趣的产品', effects: [[0, 1], [2, -1]] },
+      { text: 'AI+医疗——用AI辅助诊断和药物研发', effects: [[1, 2], [0, -1]] }
+    ]
+  },
+  {
+    id: 26,
+    text: '给你一堆零件，你更想拼出什么？',
+    options: [
+      { text: '一个能跑的小车/机器人', effects: [[0, 2], [1, -2]] },
+      { text: '一个能显示时间的电子钟', effects: [[0, 1], [1, -1]] },
+      { text: '一个DNA双螺旋结构模型', effects: [[0, -1], [1, 1]] }
+    ]
+  },
+  {
+    id: 27,
+    text: '你最喜欢的玩具/游戏类型是？',
+    options: [
+      { text: '乐高、模型、拼图', effects: [[0, 1], [2, 1]] },
+      { text: '策略游戏、棋类、解谜', effects: [[0, -2], [2, -1]] },
+      { text: '模拟经营（如城市天际线、模拟人生）', effects: [[2, -2]] },
+      { text: '开放世界探索（如塞尔达、我的世界）', effects: [[3, -2], [2, -1]] }
+    ]
+  },
+  {
+    id: 28,
+    text: '你在一个项目中最享受哪个阶段？',
+    options: [
+      { text: '头脑风暴、构想各种可能性', effects: [[3, -2], [2, -1]] },
+      { text: '制定详细计划、排期', effects: [[2, -1], [3, 1]] },
+      { text: '动手执行、把想法变成现实', effects: [[0, 2]] },
+      { text: '收尾打磨、追求完美', effects: [[2, 2], [3, 1]] }
+    ]
+  },
+  {
+    id: 30,
+    text: '你更敬仰以下哪类人？',
+    options: [
+      { text: '爱因斯坦——用纯理论改变了人类对宇宙的理解', effects: [[0, -3]] },
+      { text: '屠呦呦——从古籍中找到青蒿素，救人无数', effects: [[1, 2], [0, 1]] },
+      { text: '乔布斯——融合技术与设计的创新者', effects: [[0, 1], [3, -2]] },
+      { text: '袁隆平——扎根田野解决粮食问题的科学家', effects: [[0, 2], [1, 1]] }
+    ]
+  },
+  {
+    id: 31,
+    text: '你更想设计一个什么东西？',
+    options: [
+      { text: '一个新的App或软件系统', effects: [[0, -2], [1, -2], [2, -1]] },
+      { text: '一个更省油的汽车发动机', effects: [[0, 2], [1, -2]] },
+      { text: '一种能靶向给药的新型药物载体', effects: [[1, 2], [2, 2]] },
+      { text: '一座环保节能的建筑', effects: [[0, 1], [2, -1]] }
+    ]
+  },
+
+  // --- 价值观与动机 (Q32-Q41) ---
+  {
+    id: 32,
+    text: '什么最能给你带来成就感？',
+    options: [
+      { text: '解决了一个别人都搞不定的难题', effects: [[2, 2], [0, -1]] },
+      { text: '做出一个能帮到很多人的东西', effects: [[2, -1]] },
+      { text: '发现了一个新的知识或规律', effects: [[0, -2], [3, -1]] },
+      { text: '把一个东西打磨到完美', effects: [[2, 2], [3, 1]] }
+    ]
+  },
+  {
+    id: 33,
+    text: '选择未来方向时，哪个因素对你最重要？',
+    options: [
+      { text: '和自己的能力特长匹配', effects: [[2, 1], [0, -0.5]] },
+      { text: '有好的就业前景和收入', effects: [[0, 1], [3, 1]] },
+      { text: '能做自己真正感兴趣的事', effects: [[3, -1]] },
+      { text: '能对社会产生积极影响', effects: [[1, 1]] }
+    ]
+  },
+  {
+    id: 34,
+    text: '你对"稳定"和"冒险"怎么看？',
+    options: [
+      { text: '倾向于选择被验证过的、成熟的方向', effects: [[3, 2]] },
+      { text: '愿意尝试新兴的、有不确定性的方向', effects: [[3, -2]] },
+      { text: '在稳定基础上适当冒险', effects: [[3, -0.5], [2, -0.5]] }
+    ]
+  },
+  {
+    id: 35,
+    text: '你更在意工作中的什么体验？',
+    options: [
+      { text: '独立钻研、深入思考的安静感', effects: [[0, -1], [2, 2]] },
+      { text: '看到成果被实际使用的满足感', effects: [[0, 1], [2, -1]] },
+      { text: '持续学习新东西的成长感', effects: [[3, -1]] },
+      { text: '和团队一起攻克难关的协作感', effects: [[2, -1]] }
+    ]
+  },
+  {
+    id: 36,
+    text: '你如何看待失败？',
+    options: [
+      { text: '失败是学习的机会，认真分析原因', effects: [[2, 1]] },
+      { text: '快速翻篇，换条路继续试', effects: [[2, -1], [3, -1]] },
+      { text: '尽量提前规划周全，避免失败', effects: [[3, 1], [2, -1]] }
+    ]
+  },
+  {
+    id: 37,
+    text: '十年后的你，理想的工作状态是？',
+    options: [
+      { text: '在一个领域的顶尖位置深耕', effects: [[2, 2]] },
+      { text: '跨领域整合，做连接者和翻译者', effects: [[2, -2]] },
+      { text: '创造自己的事业或产品', effects: [[3, -2]] },
+      { text: '在一个可靠的平台上稳定发展', effects: [[3, 1]] }
+    ]
+  },
+  {
+    id: 38,
+    text: '如果你的方案被老师/上级否定了，你会？',
+    options: [
+      { text: '用数据和逻辑据理力争', effects: [[0, -1], [3, -1]] },
+      { text: '理解对方的考虑，调整方案', effects: [[3, 1]] },
+      { text: '先接受，背后继续完善自己的思路', effects: [[3, -1], [2, 1]] }
+    ]
+  },
+  {
+    id: 39,
+    text: '你对"规则"的态度是？',
+    options: [
+      { text: '规则存在是有道理的，应该遵守', effects: [[3, 2]] },
+      { text: '理解规则，但如果有更好的方法可以不拘泥', effects: [[3, -1]] },
+      { text: '规则就是拿来打破的，创新往往来自越界', effects: [[3, -3]] }
+    ]
+  },
+  {
+    id: 40,
+    text: '你更看重哪种能力？',
+    options: [
+      { text: '深度思考和分析能力', effects: [[0, -2], [2, 2]] },
+      { text: '动手实践和执行力', effects: [[0, 2]] },
+      { text: '创意和想象力', effects: [[3, -2]] },
+      { text: '沟通和协作能力', effects: [[2, -1]] }
+    ]
+  },
+  {
+    id: 41,
+    text: '一个项目做到什么程度你会觉得"可以了"？',
+    options: [
+      { text: '功能跑通了就算完成', effects: [[2, -1]] },
+      { text: '要把每个细节都打磨到满意', effects: [[2, 2], [3, 1]] },
+      { text: '超出了最初的预期才叫完成', effects: [[3, -1]] }
+    ]
+  },
+
+  // --- 社交与工作风格 (Q42-Q51) ---
+  {
+    id: 42,
+    text: '你更享受哪种工作节奏？',
+    options: [
+      { text: '大块不被打扰的时间，专注做一件事', effects: [[2, 2]] },
+      { text: '多线程处理，在不同任务间切换', effects: [[2, -1]] },
+      { text: '有明确的截止时间和里程碑', effects: [[3, 1]] }
+    ]
+  },
+  {
+    id: 43,
+    text: '和朋友讨论一个有争议的话题时，你通常？',
+    options: [
+      { text: '用事实和数据说话，追求逻辑上的正确', effects: [[0, -2], [3, -1]] },
+      { text: '倾听各方观点，寻找共识', effects: [[3, 1]] },
+      { text: '享受碰撞的过程，不一定要有结论', effects: [[3, -1]] }
+    ]
+  },
+  {
+    id: 44,
+    text: '你对"不确定性"的容忍度如何？',
+    options: [
+      { text: '不太能忍，希望有清晰的方向和计划', effects: [[3, 2]] },
+      { text: '可以接受一定程度的不确定', effects: [[3, -0.5]] },
+      { text: '不确定性让我兴奋，意味着有无限可能', effects: [[3, -3]] }
+    ]
+  },
+  {
+    id: 45,
+    text: '你更喜欢在什么样的环境中学习/工作？',
+    options: [
+      { text: '安静、整洁、有秩序的环境', effects: [[3, 1]] },
+      { text: '有点杂乱但充满灵感的环境', effects: [[3, -1]] },
+      { text: '有人在旁各自忙碌的咖啡馆', effects: [[2, -1]] }
+    ]
+  },
+	{
+		id: 46,
+		text: '在团队活动中，你通常扮演什么角色？',
+		options: [
+			{ text: '出谋划策，提出创意的那个', effects: [[3, -2], [2, -1]] },
+			{ text: '把大家想法落实成计划的那个', effects: [[2, -1], [3, 1]] },
+			{ text: '关注细节确保不遗漏环节的那个', effects: [[2, 2], [3, 1]] }
+		]
+	},
+  {
+    id: 47,
+    text: '你更佩服哪种同事/同学？',
+    options: [
+      { text: '技术能力超强，什么难题都能啃下来', effects: [[2, 2], [0, -1]] },
+      { text: '看问题很透彻，总能抓住本质', effects: [[0, -2], [2, -1]] },
+      { text: '创意层出不穷，总有好点子', effects: [[3, -2]] },
+      { text: '执行力强，说到做到、从不拖延', effects: [[0, 1], [3, 1]] }
+    ]
+  },
+	{
+		id: 48,
+		text: '你更欣赏什么样的设计？',
+		options: [
+			{ text: '外观简洁但功能强大的设计', effects: [[0, -1], [2, -1]] },
+			{ text: '外观精美、注重细节质感的设计', effects: [[2, 2], [0, 1]] },
+			{ text: '大胆创新、打破常规的设计', effects: [[3, -2]] }
+		]
+	},
+  {
+    id: 49,
+    text: '期末复习时，你怎么安排？',
+    options: [
+      { text: '制定详细的复习计划表，严格执行', effects: [[2, -1], [3, 1]] },
+      { text: '抓重点，把核心知识点吃透', effects: [[2, -1]] },
+      { text: '集中火力攻克薄弱环节', effects: [[2, 2]] }
+    ]
+  },
+  {
+    id: 50,
+    text: '你如何判断一个东西"好不好"？',
+    options: [
+      { text: '看它的设计逻辑是否严密、自洽', effects: [[0, -2]] },
+      { text: '看它好不好用、实不实用', effects: [[0, 2]] },
+      { text: '看它有没有创新和突破', effects: [[3, -2]] }
+    ]
+  },
+  {
+    id: 51,
+    text: '最后一个问题：你觉得自己更像个？',
+    options: [
+      { text: '探索者——对未知充满好奇，享受发现的过程', effects: [[0, -1], [3, -2]] },
+      { text: '建造者——喜欢亲手做出实实在在的东西', effects: [[0, 2], [1, -1]] },
+      { text: '解谜者——享受分析、推理和破解复杂问题', effects: [[0, -2], [2, 1]] },
+      { text: '守护者——希望用自己的能力保护和帮助他人', effects: [[1, 2], [3, 1]] }
+    ]
+  },
+	{
+		id: 52,
+		text: '你的学习/作息习惯更接近哪一种？',
+		options: [
+			{ text: '有固定时间表，每天按计划执行', effects: [[3, 2], [2, 1]] },
+			{ text: '根据状态灵活调整', effects: [[3, -1], [2, -1]] },
+			{ text: '有大致方向但没有严格时间表', effects: [[2, -1]] }
+		]
+	},
+];
+
+// ============================================================
+// APP STATE
+// ============================================================
+let state = {
+  questions: [],       // randomly selected 17 questions
+  answers: {},         // { questionId: optionIndex }
+  q18Result: null,     // 'A' | 'B' | 'C' | null
+  scores: [0, 0, 0, 0], // current dimension scores
+  recommendations: [], // final 3 majors
+  totalQuestions: 18
+};
+
+// ============================================================
+// UTILITY: Fisher-Yates Shuffle
+// ============================================================
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// ============================================================
+// INIT: Select 17 random questions + build Q18
+// ============================================================
+function selectQuestions() {
+  const shuffled = shuffle(QUESTION_BANK);
+  return shuffled.slice(0, 17);
+}
+
+// ============================================================
+// RENDER: Start Test
+// ============================================================
+function startTest() {
+  state.questions = selectQuestions();
+  state.answers = {};
+  state.q18Result = null;
+  state.scores = [0, 0, 0, 0];
+  state.recommendations = [];
+
+  const hero = document.getElementById('hero-section');
+  const progressWrap = document.getElementById('progress-wrap');
+  const submitWrap = document.getElementById('submit-wrap');
+  const resultsSection = document.getElementById('results-section');
+  resultsSection.classList.add('hidden');
+  resultsSection.innerHTML = '';
+
+  // Phase 1: fade out hero
+  hero.classList.add('section-exit');
+
+  // Phase 2: after hero exit, build & reveal questions
+  setTimeout(() => {
+    hero.classList.add('hidden');
+    hero.classList.remove('section-exit');
+
+    progressWrap.classList.remove('hidden');
+    progressWrap.classList.add('section-enter');
+    submitWrap.classList.remove('hidden');
+    submitWrap.classList.add('section-enter');
+
+    renderQuestions();
+    updateProgress();
+
+    // Scroll to first question
+    const qSection = document.getElementById('questions-section');
+    qSection.classList.add('section-enter');
+    qSection.scrollIntoView({ behavior: 'smooth' });
+
+    // Stagger cards: each card flies in 50ms after the previous
+    const cards = qSection.querySelectorAll('.question-card');
+    cards.forEach((card, i) => {
+      card.classList.add('stagger-in');
+      card.style.animationDelay = `${i * 50}ms`;
+    });
+
+    // Clean up enter classes after animations finish
+    setTimeout(() => {
+      progressWrap.classList.remove('section-enter');
+      submitWrap.classList.remove('section-enter');
+      qSection.classList.remove('section-enter');
+      cards.forEach(c => {
+        c.classList.remove('stagger-in');
+        c.style.animationDelay = '';
+      });
+    }, 400 + cards.length * 50 + 100);
+  }, 400);
+}
+
+function updateProgress() {
+  const answered = Object.keys(state.answers).length + (state.q18Result ? 1 : 0);
+  const total = state.totalQuestions;
+  const pct = Math.round((answered / total) * 100);
+  document.getElementById('progress-text').textContent = `进度 ${answered}/${total}`;
+  document.getElementById('progress-fill').style.width = pct + '%';
+
+  const remaining = total - answered;
+  const btn = document.getElementById('submit-btn');
+  const hint = document.getElementById('remaining-hint');
+  const progressHint = document.getElementById('progress-hint');
+
+  // Manage spin button state
+  const spinBtn = document.getElementById('spin-btn');
+  const all17Answered = Object.keys(state.answers).length >= 17;
+
+  if (remaining === 0) {
+    btn.disabled = false;
+    hint.textContent = '';
+    progressHint.textContent = '✅ 全部完成！点击下方按钮查看结果';
+    // Pulse animation on unlock
+    btn.classList.remove('btn-unlocked');
+    void btn.offsetWidth; // force reflow to restart animation
+    btn.classList.add('btn-unlocked');
+    // Auto-scroll to submit button
+    setTimeout(() => {
+      document.getElementById('submit-wrap').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 300);
+  } else if (answered === 17 && !state.q18Result) {
+    // All 17 regular questions done, unlock & prompt to spin Q18
+    progressHint.textContent = '👇 还有最后一题：转动命运齿轮！';
+    hint.textContent = '请完成第18题';
+    btn.disabled = true;
+    // Unlock spin button
+    if (spinBtn && !state.q18Result) {
+      spinBtn.disabled = false;
+      spinBtn.textContent = '🔄 转动齿轮';
+    }
+    // Auto-scroll to Q18 with pulse highlight
+    setTimeout(() => {
+      const q18 = document.getElementById('qcard_18');
+      if (q18) {
+        q18.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Pulse highlight on Q18 card
+        setTimeout(() => {
+          q18.classList.add('pulse-focus');
+          if (spinBtn) spinBtn.classList.add('breathe');
+          setTimeout(() => { q18.classList.remove('pulse-focus'); }, 1800);
+        }, 400);
+      }
+    }, 200);
+  } else {
+    btn.disabled = true;
+    hint.textContent = `还有 ${remaining} 题未答`;
+    progressHint.textContent = '';
+    // Keep spin button locked if not all 17 answered
+    if (spinBtn && !state.q18Result && !all17Answered) {
+      spinBtn.disabled = true;
+      spinBtn.textContent = '🔒 请先完成上面17题';
+    }
+  }
+}
+
+// ============================================================
+// RENDER: Questions
+// ============================================================
+function renderQuestions() {
+  const section = document.getElementById('questions-section');
+  section.style.display = 'block';
+  let html = '';
+
+  // Render 17 regular questions
+  state.questions.forEach((q, idx) => {
+    const qNum = idx + 1;
+    html += renderQuestionCard(q, qNum, 'regular');
+  });
+
+  // Render Q18 (always fixed, position 18)
+  html += renderQ18Card();
+
+  section.innerHTML = html;
+
+  // Attach event listeners
+  state.questions.forEach((q, idx) => {
+    const qNum = idx + 1;
+    q.options.forEach((opt, optIdx) => {
+      const el = document.getElementById(`q${qNum}_opt${optIdx}`);
+      if (el) {
+        el.addEventListener('click', () => selectOption(q.id, optIdx, qNum));
+      }
+    });
+  });
+}
+
+function renderQuestionCard(q, qNum, type) {
+  // Check if already answered
+  const answered = state.answers[q.id] !== undefined;
+  const selectedIdx = state.answers[q.id];
+
+  let html = `<div class="question-card${answered ? ' answered' : ''}" id="qcard_${qNum}">`;
+  html += `<div class="q-num">第 ${qNum} 题</div>`;
+  html += `<div class="q-text">${q.text}</div>`;
+  html += `<div class="options">`;
+
+  q.options.forEach((opt, optIdx) => {
+    const selected = selectedIdx === optIdx;
+    html += `<button class="option${selected ? ' selected' : ''}" id="q${qNum}_opt${optIdx}">${opt.text}</button>`;
+  });
+
+  html += `</div></div>`;
+  return html;
+}
+
+function renderQ18Card() {
+  const resultHTML = state.q18Result
+    ? `<span class="result-big">${{ A: '✨ 顺其自然 ✨', B: '🔄 逆风翻盘 🔄', C: '🎲 出其不意 🎲' }[state.q18Result]}</span><span class="result-desc">${{ A: '推荐保持原算法顺序', B: '第2、3推荐可能互换位置', C: '引入一个"黑马"专业替换第3名' }[state.q18Result]}</span>`
+    : '';
+
+  let html = `<div class="question-card q18-card${state.q18Result ? ' answered' : ''}" id="qcard_18">`;
+  html += `<div class="q-num">第 18 题 · 命运之轮</div>`;
+  html += `<div class="q-text">人生充满不确定性，有时候一个小小的偶然会改变整个方向。<br>转动命运的齿轮，看看它会带你去哪里——</div>`;
+
+  html += `<div class="spinner-area">`;
+  html += `<div class="spinner-pointer"></div>`;
+  html += `<div class="spinner-wheel" id="spinner-wheel">`;
+  html += `<span class="seg-label seg-a">A</span>`;
+  html += `<span class="seg-label seg-b">B</span>`;
+  html += `<span class="seg-label seg-c">C</span>`;
+  html += `</div>`;
+  const all17Done = Object.keys(state.answers).length >= 17;
+  const spinDisabled = state.q18Result || !all17Done;
+  html += `<button class="spin-btn" id="spin-btn" onclick="spinWheel()"${spinDisabled ? ' disabled' : ''}>${state.q18Result ? '已转动' : (all17Done ? '🔄 转动齿轮' : '🔒 请先完成上面17题')}</button>`;
+  html += `<div class="spin-result" id="spin-result">${resultHTML}</div>`;
+  html += `</div>`;
+
+  html += `</div>`;
+  return html;
+}
+
+// ============================================================
+// INTERACTION: Select Option
+// ============================================================
+function selectOption(qId, optIdx, qNum) {
+  // Store answer
+  state.answers[qId] = optIdx;
+
+  // Update card styling
+  const card = document.getElementById(`qcard_${qNum}`);
+  if (card) card.classList.add('answered');
+
+  // Update option buttons
+  const q = state.questions[qNum - 1];
+  q.options.forEach((_, i) => {
+    const btn = document.getElementById(`q${qNum}_opt${i}`);
+    if (btn) btn.classList.toggle('selected', i === optIdx);
+  });
+
+  // Recalculate scores
+  recalculateScores();
+
+  updateProgress();
+}
+
+// ============================================================
+// SCORING: Recalculate dimension scores from all answers
+// ============================================================
+function recalculateScores() {
+  state.scores = [0, 0, 0, 0];
+
+  for (const [qIdStr, optIdx] of Object.entries(state.answers)) {
+    const qId = parseInt(qIdStr);
+    // Find the question in the bank
+    const q = QUESTION_BANK.find(q => q.id === qId);
+    if (!q) continue;
+    const opt = q.options[optIdx];
+    if (!opt || !opt.effects) continue;
+    for (const [dim, val] of opt.effects) {
+      state.scores[dim] += val;
+    }
+  }
+}
+
+// ============================================================
+// Q18: Spin Wheel — Enhanced multi-phase animation
+// ============================================================
+function spinWheel() {
+  if (state.q18Result) return;
+
+  const wheel = document.getElementById('spinner-wheel');
+  const btn = document.getElementById('spin-btn');
+  const resultEl = document.getElementById('spin-result');
+
+  btn.disabled = true;
+
+  // Random outcome
+  const outcomes = ['A', 'B', 'C'];
+  const outcomeIdx = Math.floor(Math.random() * 3);
+  // Pointer is at 12-o'clock. Conic gradient starts at top going clockwise:
+  //   0-120°=A(blue), 120-240°=B(orange), 240-360°=C(green).
+  // After rotate(Xdeg) clockwise, segment at gradient (360-X%360) lands at pointer.
+  // So to land on: A→X%360∈[240,360), B→X%360∈[120,240), C→X%360∈[0,120).
+  const baseDegMap = [240, 120, 0]; // A, B, C
+  const baseDeg = baseDegMap[outcomeIdx];
+  const offset = Math.random() * 70 + 25; // 25-95° jitter within 120° segment, safe from edges
+  const fullSpins = 360 * (Math.floor(Math.random() * 4) + 6); // 6-9 full rotations, gradual engagement
+  const totalDeg = fullSpins + baseDeg + offset;
+
+  // Start spinning — no blur, just smooth deceleration
+  wheel.classList.add('spinning');
+  wheel.style.transform = `rotate(${totalDeg}deg)`;
+
+  // Reveal result after spin completes (~5.5s to match CSS transition)
+  setTimeout(() => {
+    wheel.classList.remove('spinning');
+
+    // Flash winning segment
+    const resultClass = 'result-' + outcomes[outcomeIdx].toLowerCase();
+    wheel.classList.add(resultClass);
+
+    // Store result
+    state.q18Result = outcomes[outcomeIdx];
+
+    // Build result HTML with bounce animation
+    const bigText = {
+      A: '✨ 顺其自然 ✨',
+      B: '🔄 逆风翻盘 🔄',
+      C: '🎲 出其不意 🎲'
+    }[state.q18Result];
+    const descText = {
+      A: '推荐保持原算法顺序',
+      B: '从第4/5名中抽选黑马替换第3推荐',
+      C: '从距离最远的专业中随机抽选替换第3名'
+    }[state.q18Result];
+
+    resultEl.innerHTML = `<span class="result-big">${bigText}</span><span class="result-desc">${descText}</span>`;
+
+    document.getElementById('qcard_18').classList.add('answered');
+    updateProgress();
+
+    // If it landed near a boundary, do a tiny "nervous" shake
+    if (offset < 40 || offset > 80) {
+      wheel.style.transition = 'transform 0.15s ease';
+      wheel.style.transform = `rotate(${totalDeg - 5}deg)`;
+      setTimeout(() => {
+        wheel.style.transform = `rotate(${totalDeg + 5}deg)`;
+        setTimeout(() => {
+          wheel.style.transform = `rotate(${totalDeg}deg)`;
+          setTimeout(() => { wheel.style.transition = ''; }, 200);
+        }, 150);
+      }, 150);
+    }
+  }, 7600);
+}
+
+// ============================================================
+// RECOMMENDATION ENGINE
+// ============================================================
+function computeRecommendations() {
+  const userProfile = state.scores;
+
+  // Calculate Euclidean distance to each major
+  const distances = MAJORS.map((major, idx) => {
+    let sumSq = 0;
+    for (let d = 0; d < 4; d++) {
+      sumSq += Math.pow(userProfile[d] - major.profile[d], 2);
+    }
+    return { index: idx, distance: Math.sqrt(sumSq) };
+  });
+
+  // Sort by distance (ascending)
+  distances.sort((a, b) => a.distance - b.distance);
+
+  // Apply Q18 adjustment
+  let top3 = distances.slice(0, 3);
+  const originalTop3Indices = new Set(top3.map(d => d.index));
+
+  if (state.q18Result === 'B') {
+    // 逆风翻盘：从第4/5名中随机选一个替换第3名
+    const pool = distances.slice(3, 5);
+    if (pool.length > 0) {
+      const pick = pool[Math.floor(Math.random() * pool.length)];
+      top3[2] = pick;
+    }
+  } else if (state.q18Result === 'C') {
+    // 出其不意：从距离最远的4个专业中随机选一个替换第3名
+    const farthestPool = distances.slice(-4);
+    if (farthestPool.length > 0) {
+      const pick = farthestPool[Math.floor(Math.random() * farthestPool.length)];
+      top3[2] = pick;
+    }
+  }
+  // 'A': keep as is
+
+  state.recommendations = top3.map(d => {
+    const major = MAJORS[d.index];
+    return {
+      ...major,
+      _isDarkHorse: !originalTop3Indices.has(d.index),
+      _distance: d.distance
+    };
+  });
+  return state.recommendations;
+}
+
+// ============================================================
+// RENDER: Results (Carousel)
+// ============================================================
+let carouselIndex = 0;
+
+function showResults() {
+  try {
+    const recs = computeRecommendations();
+    if (!recs || recs.length === 0) {
+      alert('推荐计算出错，请刷新页面重试');
+      return;
+    }
+    carouselIndex = 0;
+
+    // Phase 1: fade out questions section
+    const qSection = document.getElementById('questions-section');
+    const submitWrap = document.getElementById('submit-wrap');
+    const progressWrap = document.getElementById('progress-wrap');
+    qSection.classList.add('section-exit');
+    submitWrap.classList.add('section-exit');
+    progressWrap.classList.add('section-exit');
+
+    // Phase 2: after exit, build & reveal results
+    setTimeout(() => {
+      qSection.style.display = 'none';
+      qSection.classList.remove('section-exit');
+      submitWrap.classList.add('hidden');
+      submitWrap.classList.remove('section-exit');
+      progressWrap.classList.add('hidden');
+      progressWrap.classList.remove('section-exit');
+
+      const section = document.getElementById('results-section');
+      section.classList.remove('hidden');
+      section.style.display = 'block';
+
+    const profileDesc = describeProfile(state.scores);
+    const dimNames = ['抽象↔具象', '物性↔生命', '系统↔细节', '创新↔规范'];
+
+    // ── Header ──
+    let html = '<div class="results-header fade-in">';
+    html += '<h2>🎯 你的专业推荐</h2>';
+    html += `<p class="summary-text">${profileDesc}</p>`;
+    html += '</div>';
+
+    // ── Dimension strip (ultra-compact) ──
+    html += '<div class="dim-strip fade-in">';
+    for (let d = 0; d < 4; d++) {
+      const pct = Math.max(5, Math.min(95, ((state.scores[d] + 8) / 16) * 90 + 5));
+      html += `<div class="dim-item"><span>${dimNames[d]}</span><div class="dim-bar"><div class="dim-fill" style="width:${pct}%"></div></div></div>`;
+    }
+    html += '</div>';
+
+    // ── Carousel ──
+    html += '<div class="carousel-wrap" id="carousel-wrap">';
+    html += '<div class="carousel-track" id="carousel-track">';
+
+    recs.forEach((major, idx) => {
+      const rankLabel = ['🥇 第一推荐', '🥈 第二推荐', major._isDarkHorse ? '🎲 命运黑马' : '🥉 第三推荐'];
+      const rankClass = ['r1', 'r2', major._isDarkHorse ? 'r3' : 'r3'];
+      const emoji = MAJOR_EMOJIS[major.id] || ['🎓', '📚', '🔍', '💡', '⭐'];
+
+      html += '<div class="carousel-slide">';
+
+      // Emoji banner (horizontal strip)
+      html += '<div class="emoji-banner">';
+      html += `<span class="main-emoji">${emoji[0]}</span>`;
+      html += `<div class="prop-row">`;
+      html += `<span>${emoji[1]}</span><span>${emoji[2]}</span><span>${emoji[3]}</span><span>${emoji[4]}</span>`;
+      html += `</div></div>`;
+
+      // Profession identity (rank + name + scope)
+      html += '<div class="prof-id">';
+      html += `<div class="rank-badge ${rankClass[idx]}">${rankLabel[idx]}</div>`;
+      html += `<div class="major-name">${major.name}</div>`;
+      html += `<div class="major-scope">📚 ${major.scope}</div>`;
+      html += '</div>';
+
+      // Info card
+      html += '<div class="info-card">';
+      html += `<div class="match-reason">💡 ${getMatchReason(major, state.scores)}</div>`;
+      html += `<div class="major-intro">${major.intro}</div>`;
+      html += '<div class="major-examples"><h4>🔍 生活举例</h4><ul>';
+      major.examples.forEach(ex => { html += `<li>${ex}</li>`; });
+      html += '</ul></div></div>';
+
+      // Share
+      html += `<div class="slide-share"><button class="btn-share" onclick="generatePoster(${idx})">📸 分享此推荐</button></div>`;
+
+      html += '</div>'; // slide
+    });
+
+    html += '</div>'; // track
+
+    // Nav
+    html += '<div class="carousel-nav">';
+    html += '<div class="carousel-arrow" onclick="slideTo(carouselIndex-1)">‹</div>';
+    html += '<div class="carousel-dots" id="carousel-dots">';
+    for (let i = 0; i < 3; i++) {
+      html += `<div class="carousel-dot${i===0?' active':''}" onclick="slideTo(${i})"></div>`;
+    }
+    html += '</div>';
+    html += '<div class="carousel-arrow" onclick="slideTo(carouselIndex+1)">›</div>';
+    html += '</div>';
+    html += '</div>'; // carousel-wrap
+
+    // Disclaimer
+    html += '<div class="disclaimer"><strong>⚠️ 选科提醒：</strong>不同学校选科要求不同，本测试仅为兴趣参考，志愿填报请以官方信息为准。</div>';
+    html += '<div class="disclaimer" style="margin-top:8px;text-align:center;"><strong>📧 联系邮箱：</strong><a href="mailto:1361036553@qq.com" style="color:var(--accent);">1361036553@qq.com</a></div>';
+
+    section.innerHTML = html;
+
+    // Setup touch/mouse swipe
+    setupCarouselSwipe();
+
+    // Animate results entrance
+    section.classList.add('section-enter');
+
+    // Stagger children: header → dims → carousel → disclaimer
+    const children = section.querySelectorAll('.results-header, .dim-strip, .carousel-wrap, .disclaimer');
+    children.forEach((el, i) => {
+      el.style.opacity = '0';
+      el.style.animation = `fadeInUp 0.45s cubic-bezier(0.4, 0, 0.2, 1) ${i * 80}ms forwards`;
+    });
+
+    // Scroll to results
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
+    }, 100);
+
+    // Cleanup animation classes
+    setTimeout(() => {
+      section.classList.remove('section-enter');
+      children.forEach(el => {
+        el.style.opacity = '';
+        el.style.animation = '';
+      });
+    }, 600);
+
+    }, 400); // end of Phase 2 setTimeout (after section-exit completes)
+
+  } catch (err) {
+    console.error('显示结果出错:', err);
+    alert('抱歉，结果展示出现错误，请刷新页面重试。错误: ' + err.message);
+  }
+}
+
+function slideTo(index) {
+  if (index < 0 || index > 2) return;
+  carouselIndex = index;
+  const track = document.getElementById('carousel-track');
+  if (track) track.style.transform = `translateX(-${index * 100}%)`;
+  // Update dots
+  const dots = document.querySelectorAll('.carousel-dot');
+  dots.forEach((d, i) => d.classList.toggle('active', i === index));
+}
+
+function setupCarouselSwipe() {
+  const wrap = document.getElementById('carousel-wrap');
+  if (!wrap) return;
+  let startX = 0, dragging = false;
+
+  wrap.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX; dragging = true;
+  }, { passive: true });
+  wrap.addEventListener('touchend', e => {
+    if (!dragging) return;
+    dragging = false;
+    const diff = startX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) {
+      slideTo(carouselIndex + (diff > 0 ? 1 : -1));
+    }
+  });
+  // Mouse drag fallback
+  wrap.addEventListener('mousedown', e => {
+    startX = e.clientX; dragging = true; e.preventDefault();
+  });
+  wrap.addEventListener('mouseup', e => {
+    if (!dragging) return;
+    dragging = false;
+    const diff = startX - e.clientX;
+    if (Math.abs(diff) > 50) {
+      slideTo(carouselIndex + (diff > 0 ? 1 : -1));
+    }
+  });
+  wrap.addEventListener('mouseleave', () => { dragging = false; });
+}
+
+function getMatchReason(major, scores) {
+  // Dark horse: fate-driven pick, not a natural match — give a distinct reason
+  if (major._isDarkHorse) {
+    const fateReasons = [
+      `命运之轮为你打开了另一扇窗！${major.name}虽然与你的自然倾向不同，但人生有时候就需要一点出其不意——这个领域可能藏着你不曾发现的潜能。`,
+      `这是一次命运的"意外"推荐。${major.name}离你的舒适区有点距离，但正因如此，它可能带你看不一样的风景。`,
+      `谁说人生一定要按部就班？${major.name}是齿轮转出来的缘分，不妨认真了解一下，也许你会发现自己都没想到的兴趣。`,
+      `命运齿轮转出的黑马！${major.name}不在你的自然匹配区，但有时候最意外的方向反而会成为最好的选择。`
+    ];
+    return fateReasons[Math.floor(Math.random() * fateReasons.length)];
+  }
+
+  // Find the dimension where user score is closest to major profile
+  let bestDim = 0;
+  let bestAgreement = -Infinity;
+  const dimNames = [
+    ['抽象vs具象', ['抽象的推理分析', '具象的动手操作']],
+    ['物性vs生命', ['物理/机械方向', '生命/人体方向']],
+    ['系统vs细节', ['宏观的系统思维', '深入的细节钻研']],
+    ['创新vs规范', ['创新的探索精神', '规范的执行力']]
+  ];
+
+  const parts = [];
+  for (let d = 0; d < 4; d++) {
+    const diff = Math.abs(scores[d] - major.profile[d]);
+    if (diff < 2.5) {
+      // Good match on this dimension
+      if (scores[d] < 0) {
+        parts.push(dimNames[d][1][0]);
+      } else if (scores[d] > 0) {
+        parts.push(dimNames[d][1][1]);
+      }
+    }
+  }
+
+  if (parts.length >= 2) {
+    return `你的${parts.slice(0, 2).join('和')}特质，与${major.name}的核心要求高度吻合。`;
+  } else if (parts.length === 1) {
+    return `你的${parts[0]}特质，与${major.name}的方向较为匹配。`;
+  } else {
+    return `你在多个维度上展现了均衡的能力，这与${major.name}所需的综合素质相匹配。`;
+  }
+}
+
+// ============================================================
+// POSTER GENERATION (single major)
+// ============================================================
+function generatePoster(index) {
+  const major = state.recommendations[index];
+  if (!major) return;
+
+  const poster = document.getElementById('poster-capture');
+  const emoji = MAJOR_EMOJIS[major.id] || ['🎓', '📚', '🔍', '💡', '⭐'];
+  const rankLabels = ['🥇 第一推荐', '🥈 第二推荐', '🥉 第三推荐'];
+  const rankClass = ['r1', 'r2', major._isDarkHorse ? 'r3' : 'r3'];
+  const rankLabel = major._isDarkHorse ? '🎲 命运黑马' : rankLabels[index];
+  const dimNames = ['抽象↔具象', '物性↔生命', '系统↔细节', '创新↔规范'];
+  const reason = getMatchReason(major, state.scores);
+
+  let html = '';
+
+  // ── Header ──
+  html += '<div class="p-header">';
+  html += '<div class="p-icon">🎓</div>';
+  html += '<div class="p-title">我的专业方向</div>';
+  html += '<div class="p-subtitle">ExploreMyWay · 结果海报</div>';
+  html += '</div>';
+
+  // ── Emoji banner ──
+  html += '<div class="p-emoji-row">';
+  html += `<span class="p-main-emoji">${emoji[0]}</span>`;
+  html += '<div class="p-props">';
+  html += `<span>${emoji[1]}</span><span>${emoji[2]}</span><span>${emoji[3]}</span><span>${emoji[4]}</span>`;
+  html += '</div></div>';
+
+  // ── Identity ──
+  html += '<div class="p-identity">';
+  html += `<div class="p-rank ${rankClass}">${rankLabel}</div>`;
+  html += `<div class="p-major-name">${major.name}</div>`;
+  html += `<div class="p-scope">📚 ${major.scope}</div>`;
+  html += '</div>';
+
+  // ── Info card ──
+  html += '<div class="p-card">';
+  html += `<div class="p-reason">💡 ${reason}</div>`;
+  html += `<div class="p-intro">${major.intro}</div>`;
+  html += '<div class="p-examples-title">🔍 生活举例</div>';
+  html += '<ul class="p-examples">';
+  major.examples.forEach(ex => { html += `<li>${ex}</li>`; });
+  html += '</ul></div>';
+
+  // ── Dimension strip ──
+  html += '<div class="p-dims">';
+  for (let d = 0; d < 4; d++) {
+    const pct = Math.max(5, Math.min(95, ((state.scores[d] + 8) / 16) * 90 + 5));
+    html += `<div class="p-dim-item"><span>${dimNames[d]}</span><div class="p-dim-bar"><div class="p-dim-fill" style="width:${pct}%"></div></div></div>`;
+  }
+  html += '</div>';
+
+  // ── Footer with QR ──
+  html += '<div class="p-footer">';
+  html += '<div class="p-qr"><div id="poster-qr"></div></div>';
+  html += '<div class="p-qr-tip">扫码测测你的专业方向</div>';
+  html += '<div class="p-email">📧 1361036553@qq.com</div>';
+  html += '</div>';
+
+  poster.innerHTML = html;
+
+  const qrContainer = document.getElementById('poster-qr');
+  if (qrContainer) {
+    qrContainer.innerHTML = '';
+    if (typeof QRCode !== 'undefined') {
+      new QRCode(qrContainer, {
+        text: window.location.href,
+        width: 76, height: 76,
+        colorDark: '#334155', colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    }
+  }
+
+  setTimeout(() => {
+    if (typeof html2canvas !== 'undefined') {
+      html2canvas(poster, { scale: 2, backgroundColor: '#f5f7fa', useCORS: true })
+        .then(canvas => {
+          const link = document.createElement('a');
+          link.download = `我的专业方向-${major.name}.png`;
+          link.href = canvas.toDataURL('image/png');
+          link.click();
+        }).catch(err => {
+          console.error('海报生成失败:', err);
+          alert('海报生成失败，请截图结果页保存');
+        });
+    } else {
+      alert('请截图当前页面保存结果');
+    }
+  }, 600);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+console.log('🎓 ExploreMyWay 已就绪');
+console.log(`   ${QUESTION_BANK.length} 道题库，随机抽取 17 道 + Q18`);
+console.log(`   ${MAJORS.length} 个专业大类`);
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+</body>
+</html>
