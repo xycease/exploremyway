@@ -8,20 +8,24 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 面向高考生的 MBTI 风格单页测试网站。从 51 道题库随机抽 17 题 + 固定 Q18 命运转盘，基于四维度画像+欧氏距离匹配推荐 3 个理工科专业大类。
 
-纯前端单文件（HTML+CSS+JS全部内嵌），部署到 Gitee Pages（国内用户）。
+纯前端单文件（HTML+CSS+JS全部内嵌），部署到 GitHub Pages（`https://xycease.github.io/exploremyway/`）。
 
 ## 文件结构
 
 ```
 D:\考研\exploremyway\
 ├── index.html              # 主页面（单文件，HTML+CSS+JS 全部内嵌）
-├── hero-bg.jpg             # Hero 全屏背景图（攀登者雪山，1200px，216KB）
+├── hero-bg.webp             # Hero 全屏背景图 WebP（60KB，从 2.6MB PNG 压缩 98%）
+├── hero-bg.png             # Hero 原始 PNG 备份（1080×1920，2.6MB，.gitignore 排除）
 ├── 实施计划.md               # 原始需求文档
 ├── cxadvice.txt            # 宣传文案/广告语
-├── test-slide1~3.png       # Playwright 自动截图（三个推荐专业各一张）
-├── poster-promo.html       # 宣传海报（待创建）
+├── poster4xhs/             # 小红书宣传海报
+│   ├── poster-gen.html       # HTML Canvas 海报生成源码
+│   ├── poster-xiaohongshu.png # 最终海报 PNG（1080×1920px）
+│   └── poster-philosophy.md  # 设计哲学文档
 └── .claude/
-    └── settings.local.json # 本地权限配置
+    ├── settings.local.json # 本地权限配置
+    └── memory/             # 持久化记忆
 ```
 
 ## 技术栈
@@ -37,6 +41,15 @@ D:\考研\exploremyway\
 - **清空重测**：刷新页面即可，所有状态仅存于 JS 内存
 - **海报保存**：做完测试 → 滑到对应推荐卡片 → 点击「📸 分享此推荐」→ 自动下载 PNG（依赖 html2canvas + qrcodejs CDN）
 - **截图测试**：`python -c "..."` inline Playwright 脚本（视口 414×896，模拟 iPhone 11 Pro）
+- **部署**：`git push github main` 推送至 GitHub Pages（自动部署，URL: `https://xycease.github.io/exploremyway/`）
+
+## Git 仓库
+
+- **分支**：`main`（默认）
+- **双远程**：
+  - `origin` → Gitee（`https://gitee.com/xycease/exploremyway.git`）
+  - `github` → GitHub（`https://github.com/xycease/exploremyway.git`）
+- **GitHub Pages**：已启用，从 `main` 分支根目录部署
 
 ## 核心架构
 
@@ -108,11 +121,11 @@ state = {
 
 ### 页面流程
 
-Hero（全屏雪山背景 + 毛笔苍裂标语「不因少了一座雪峰而影响你的志愿填报」）→ (点击「开始探索」) → 17题+Q18答题区 + 进度条 + 提交按钮 → 结果页（四维条 + Emoji滑窗 ×3 + 独立分享按钮 + 选科提醒）
+Hero（全屏雪山背景 WebP + 毛笔苍裂标语「不因少了一座雪峰而影响你的志愿填报」）→ (点击「开始探索」→ `scroll-margin-top` 避开 sticky 进度条) → 17题+Q18答题区 + sticky 进度条 + 提交按钮 → 结果页（Emoji滑窗 ×3 + 精简信息卡 + 独立分享按钮 + 选科提醒）
 
 ### Emoji 角色系统
 
-12 个专业各有 `MAJOR_EMOJIS` 映射：`[主角色, 道具1, 道具2, 道具3, 道具4]`。结果页以横向矩形横幅展示：左侧大 emoji（52px）+ 右侧 4 个道具小 emoji 一字排开（26px）。
+12 个专业各有 `MAJOR_EMOJIS` 映射：`[主角色, 道具1, 道具2]`（精简为 3 个）。结果页以横向矩形横幅展示：左侧大 emoji（52px）+ 右侧 2 个道具小 emoji 一字排开（26px）。
 
 ### 自动化测试
 
@@ -129,7 +142,7 @@ python -m playwright install chromium
 
 截图输出：`test-slide1.png`、`test-slide2.png`、`test-slide3.png`（对应三个推荐专业滑窗）。
 
-## 上次进度（2026-06-10）
+## 上次进度（2026-06-13）
 
 - ✅ Hero页全屏雪山背景 + 毛笔苍裂标语（Zhi Mang Xing 字体 + SVG 滤镜）
 - ✅ **雪山曙光色系重构**（山湖蓝 #3a6b8c / 曙光橙 #d4794a / 石板绿 #7a9a6e）
@@ -142,13 +155,17 @@ python -m playwright install chromium
 - ✅ **单专业独立分享海报**（generatePoster 支持 index 参数）
 - ✅ CSS 响应式（max-width: 480px 断点）
 - ✅ Playwright 自动化截图测试（完整流程通过）
+- ✅ **Hero 图片 WebP 压缩**（2.6MB → 60KB，98% 缩减）
+- ✅ **第一题被遮挡修复**（`scroll-margin-top: 56px` + 进度条 padding 缩减）
+- ✅ **结果页信息精简**（去掉四维条/细分方向/第3个例子，emoji 减到 3 个，intro 裁到 1 句，匹配文案缩短）
+- ✅ **小红书宣传海报**（`poster4xhs/poster-xiaohongshu.png`，1080×1920px，Canvas + QR 码）
+- ✅ **GitHub Pages 部署**（`https://xycease.github.io/exploremyway/`，双 remote：Gitee origin + GitHub github）
+- ⬜ 真机测试 / 多组答案验证
 - ⬜ 宣传海报独立页面（poster-promo.html）
-- ⬜ 部署上线
-- ⬜ 真机测试
 
 ## 下一步
 
-1. ⏳ Gitee 实名认证 → 开启 Gitee Pages 部署
-2. 真机测试 → 修触摸/布局问题
-3. 多组答案验证推荐合理性
-4. 创建 poster-promo.html 宣传海报页
+1. 手机浏览器打开 `https://xycease.github.io/exploremyway/` 真机测试
+2. 多组模拟答案验证推荐合理性
+3. 如有需要，创建 poster-promo.html 宣传海报页
+4. 如需国内加速，可完成 Gitee 实名认证后同步部署
