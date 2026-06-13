@@ -637,6 +637,117 @@ body {
 #poster-capture .p-email {
   font-size: 11px; color: #94a3b8; margin-top: 2px;
 }
+
+/* ========================================
+   Poster Preview Modal
+   ======================================== */
+.poster-modal-overlay {
+  display: none;
+  position: fixed;
+  z-index: 10000;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.88);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  -webkit-tap-highlight-color: transparent;
+}
+.poster-modal-overlay.active {
+  display: flex;
+}
+.poster-modal-img {
+  max-width: 90vw;
+  max-height: 64vh;
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  object-fit: contain;
+}
+.poster-modal-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.poster-modal-loading.hidden {
+  display: none;
+}
+.loading-spinner {
+  width: 36px; height: 36px;
+  border: 3px solid rgba(255,255,255,0.2);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.loading-text {
+  color: rgba(255,255,255,0.7);
+  font-size: 14px;
+  margin: 0;
+}
+.poster-modal-tip {
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 14px;
+  margin-top: 14px;
+  text-align: center;
+  line-height: 1.6;
+}
+.poster-modal-tip .icon-hand {
+  display: inline-block;
+  margin: 0 4px;
+  animation: fingerPulse 1.5s ease-in-out infinite;
+}
+@keyframes fingerPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+.poster-modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.poster-modal-btn {
+  padding: 10px 22px;
+  border-radius: 24px;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.poster-modal-btn:active { opacity: 0.7; }
+.poster-modal-btn.primary {
+  background: var(--accent);
+  color: #fff;
+}
+.poster-modal-btn.secondary {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+.poster-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: background 0.2s;
+}
+.poster-modal-close:active { background: rgba(255, 255, 255, 0.3); }
+
 /* ========================================
    Responsive
    ======================================== */
@@ -789,6 +900,21 @@ body {
 
 <!-- Hidden poster capture element -->
 <div id="poster-capture"></div>
+
+<!-- Poster preview modal -->
+<div class="poster-modal-overlay" id="poster-modal-overlay" onclick="closePosterModal(event)">
+  <button class="poster-modal-close" onclick="closePosterModal(event)">✕</button>
+  <img class="poster-modal-img" id="poster-modal-img" alt="我的专业方向海报" style="display:none" />
+  <div class="poster-modal-loading" id="poster-modal-loading">
+    <div class="loading-spinner"></div>
+    <p class="loading-text">正在生成海报...</p>
+  </div>
+  <div class="poster-modal-tip" id="poster-modal-tip" style="display:none">👆 <span class="icon-hand">长按</span>图片保存到相册</div>
+  <div class="poster-modal-actions" id="poster-modal-actions" style="display:none">
+    <button class="poster-modal-btn primary" onclick="downloadPoster()">💾 下载图片</button>
+    <button class="poster-modal-btn secondary" onclick="closePosterModal(event)">关闭</button>
+  </div>
+</div>
 
 <script>
 // ============================================================
@@ -2087,6 +2213,9 @@ function generatePoster(index) {
   const major = state.recommendations[index];
   if (!major) return;
 
+  // Show modal instantly with loading spinner
+  showPosterModalLoading();
+
   const poster = document.getElementById('poster-capture');
   const emoji = MAJOR_EMOJIS[major.id] || ['🎓', '📚', '🔍'];
   const rankLabels = ['🥇 第一推荐', '🥈 第二推荐', '🥉 第三推荐'];
@@ -2150,10 +2279,7 @@ function generatePoster(index) {
     if (typeof html2canvas !== 'undefined') {
       html2canvas(poster, { scale: 2, backgroundColor: '#f5f7fa', useCORS: true })
         .then(canvas => {
-          const link = document.createElement('a');
-          link.download = `我的专业方向-${major.name}.png`;
-          link.href = canvas.toDataURL('image/png');
-          link.click();
+          showPosterModal(canvas, major);
         }).catch(err => {
           console.error('海报生成失败:', err);
           alert('海报生成失败，请截图结果页保存');
@@ -2161,7 +2287,47 @@ function generatePoster(index) {
     } else {
       alert('请截图当前页面保存结果');
     }
-  }, 600);
+  }, 150);
+}
+
+// ============================================================
+// Poster Modal helpers
+// ============================================================
+let posterDataUrl = '';
+
+function showPosterModalLoading() {
+  document.getElementById('poster-modal-img').style.display = 'none';
+  document.getElementById('poster-modal-loading').classList.remove('hidden');
+  document.getElementById('poster-modal-tip').style.display = 'none';
+  document.getElementById('poster-modal-actions').style.display = 'none';
+  document.getElementById('poster-modal-overlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function showPosterModal(canvas, major) {
+  posterDataUrl = canvas.toDataURL('image/png');
+  const img = document.getElementById('poster-modal-img');
+  img.src = posterDataUrl;
+  // Swap: hide loading, show poster content
+  document.getElementById('poster-modal-loading').classList.add('hidden');
+  img.style.display = '';
+  document.getElementById('poster-modal-tip').style.display = '';
+  document.getElementById('poster-modal-actions').style.display = '';
+}
+
+function closePosterModal(event) {
+  if (event && event.target === document.getElementById('poster-modal-img')) return;
+  if (event) event.stopPropagation();
+  document.getElementById('poster-modal-overlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function downloadPoster() {
+  if (!posterDataUrl) return;
+  const link = document.createElement('a');
+  link.download = '我的专业方向.png';
+  link.href = posterDataUrl;
+  link.click();
 }
 
 // ============================================================
