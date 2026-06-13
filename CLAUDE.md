@@ -2,18 +2,18 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-# CareerAdvice — 高考理工科专业推荐测试
+# ExploreMyWay — 高考理工科专业推荐测试
 
 ## 项目简介
 
 面向高考生的 MBTI 风格单页测试网站。从 51 道题库随机抽 17 题 + 固定 Q18 命运转盘，基于四维度画像+欧氏距离匹配推荐 3 个理工科专业大类。
 
-纯前端单文件（HTML+CSS+JS全部内嵌），部署到 GitHub Pages / Vercel。
+纯前端单文件（HTML+CSS+JS全部内嵌），部署到 Gitee Pages（国内用户）。
 
 ## 文件结构
 
 ```
-D:\考研\CareerAdvice\
+D:\考研\exploremyway\
 ├── index.html              # 主页面（单文件，HTML+CSS+JS 全部内嵌）
 ├── hero-bg.jpg             # Hero 全屏背景图（攀登者雪山，1200px，216KB）
 ├── 实施计划.md               # 原始需求文档
@@ -148,7 +148,7 @@ python -m playwright install chromium
 
 ## 下一步
 
-1. 真机测试 → 修触摸/布局问题
-2. 多组答案验证推荐合理性
-3. 创建 poster-promo.html 宣传海报页
-4. 部署到 Vercel 或 GitHub Pages
+1. ⏳ Gitee 实名认证 → 开启 Gitee Pages 部署
+2. 真机测试 → 修触摸/布局问题
+3. 多组答案验证推荐合理性
+4. 创建 poster-promo.html 宣传海报页

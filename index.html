@@ -202,7 +202,7 @@ body {
   top: 0;
   z-index: 10;
   background: var(--bg);
-  padding: 12px 0;
+  padding: 8px 0;
 }
 .progress-info {
   display: flex;
@@ -226,7 +226,7 @@ body {
 /* ========================================
    Question Cards
    ======================================== */
-#questions-section { display: none; }
+#questions-section { display: none; scroll-margin-top: 56px; }
 .question-card {
   background: var(--card-bg);
   border-radius: var(--radius);
@@ -422,28 +422,6 @@ body {
   max-width: 380px; margin: 0 auto; line-height: 1.5;
 }
 
-/* ----- dimension strip (ultra-compact, 1-row) ----- */
-.dim-strip {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  padding: 4px 14px;
-  margin: 2px 0 0;
-  flex-wrap: wrap;
-}
-.dim-item {
-  display: flex; align-items: center; gap: 4px;
-  font-size: 13px; color: var(--text-secondary);
-}
-.dim-item .dim-bar {
-  width: 48px; height: 4px;
-  background: #e8e3dd; border-radius: 2px; overflow: hidden;
-}
-.dim-item .dim-fill {
-  height: 100%; background: var(--accent); border-radius: 2px;
-  transition: width 0.5s ease;
-}
-
 /* ===== Carousel ===== */
 .carousel-wrap {
   position: relative; overflow: hidden; touch-action: pan-y;
@@ -492,9 +470,6 @@ body {
 .prof-id .major-name {
   font-size: 26px; font-weight: 700; margin-bottom: 2px;
 }
-.prof-id .major-scope {
-  font-size: 14px; color: var(--text-secondary);
-}
 
 /* ----- Info card (match reason + intro + examples) ----- */
 .info-card {
@@ -503,15 +478,11 @@ body {
   box-shadow: var(--shadow);
 }
 .info-card .match-reason {
-  font-size: 16px; color: var(--accent);
-  padding: 8px 12px; background: #f0f5f8; border-radius: 8px;
-  line-height: 1.5; margin-bottom: 8px;
+  font-size: 16px; color: var(--accent); font-weight: 600;
+  line-height: 1.5; margin-bottom: 6px;
 }
 .info-card .major-intro {
   font-size: 16px; line-height: 1.6; margin-bottom: 6px;
-}
-.info-card .major-examples h4 {
-  font-size: 14px; color: var(--text-secondary); margin-bottom: 2px;
 }
 .info-card .major-examples ul { list-style:none; padding:0; }
 .info-card .major-examples li {
@@ -627,9 +598,6 @@ body {
 #poster-capture .p-major-name {
   font-size: 24px; font-weight: 700; margin-bottom: 2px;
 }
-#poster-capture .p-scope {
-  font-size: 12px; color: #64748b;
-}
 
 /* ── Info card ── */
 #poster-capture .p-card {
@@ -640,16 +608,11 @@ body {
   box-shadow: 0 1px 4px rgba(0,0,0,0.04);
 }
 #poster-capture .p-reason {
-  font-size: 13px; color: #3a6b8c;
-  background: #f0f5f8; border-radius: 8px;
-  padding: 8px 10px; margin-bottom: 8px;
-  line-height: 1.55;
+  font-size: 13px; color: #3a6b8c; font-weight: 600;
+  margin-bottom: 6px; line-height: 1.55;
 }
 #poster-capture .p-intro {
   font-size: 13px; line-height: 1.6; margin-bottom: 6px; color: #334155;
-}
-#poster-capture .p-examples-title {
-  font-size: 11px; color: #94a3b8; margin-bottom: 2px;
 }
 #poster-capture .p-examples {
   list-style: none; padding: 0; margin: 0;
@@ -659,23 +622,6 @@ body {
 }
 #poster-capture .p-examples li::before {
   content: '▸'; position: absolute; left: 0; color: #3a6b8c; font-size: 9px;
-}
-
-/* ── Dimension strip ── */
-#poster-capture .p-dims {
-  display: flex; justify-content: center; gap: 10px;
-  flex-wrap: wrap; padding: 4px 0; margin-bottom: 10px;
-}
-#poster-capture .p-dim-item {
-  display: flex; align-items: center; gap: 3px;
-  font-size: 10px; color: #94a3b8;
-}
-#poster-capture .p-dim-bar {
-  width: 36px; height: 3px;
-  background: #e8e3dd; border-radius: 2px; overflow: hidden;
-}
-#poster-capture .p-dim-fill {
-  height: 100%; background: #3a6b8c; border-radius: 2px;
 }
 
 /* ── Footer ── */
@@ -712,19 +658,14 @@ body {
   /* Results */
   .results-header h2 { font-size: 20px; }
   .results-header .summary-text { font-size: 14px; }
-  .dim-strip { gap: 10px; padding: 4px 6px; }
-  .dim-item { font-size: 12px; }
-  .dim-item .dim-bar { width: 36px; }
   .emoji-banner { gap: 12px; padding: 10px 14px; margin: 0 2px; }
   .emoji-banner .main-emoji { font-size: 46px; }
   .emoji-banner .prop-row { font-size: 22px; gap: 8px; }
   .prof-id .rank-badge { font-size: 12px; }
   .prof-id .major-name { font-size: 24px; }
-  .prof-id .major-scope { font-size: 13px; }
   .info-card { padding: 12px 14px; margin: 0 2px; }
   .info-card .match-reason { font-size: 15px; }
   .info-card .major-intro { font-size: 15px; }
-  .info-card .major-examples h4 { font-size: 13px; }
   .info-card .major-examples li { font-size: 14px; }
   .slide-share .btn-share { font-size: 15px; padding: 10px 24px; }
   .disclaimer { font-size: 13px; padding: 12px 14px; }
@@ -810,7 +751,7 @@ body {
   <!-- ===== Hero — full viewport, mountain image + brush calligraphy ===== -->
   <div class="hero" id="hero-section">
     <div class="hero-bg">
-      <img src="hero-bg.png" alt="">
+      <img src="hero-bg.webp" alt="">
     </div>
     <div class="hero-overlay"></div>
     <div class="hero-content">
@@ -861,7 +802,7 @@ const MAJORS = [
     // Dimension profile: [抽象-具象, 物性-生命, 系统-细节, 创新-规范]
     // negative = abstract/physical/systems/innovative
     profile: [-3.5, -3, -2, -1.5],
-    intro: '计算机类专业研究如何用算法和系统解决各类问题，从手机App到超级计算机都离不开它。这个领域变化极快，永远有新东西可以学。',
+    intro: '计算机类专业研究如何用算法和系统解决各类问题，从手机App到超级计算机都离不开它。',
     examples: [
       '你每天用的微信、抖音、支付宝，背后是成千上万行代码在运行',
       'ChatGPT这样的人工智能对话，来自深度学习和自然语言处理技术',
@@ -873,7 +814,7 @@ const MAJORS = [
     name: '电子信息类',
     scope: '电子信息工程、通信工程、自动化、电气工程、光电信息',
     profile: [-1.5, -2.5, -1, 0],
-    intro: '电子信息类专业研究电路、芯片、信号处理和通信技术，是智能硬件和通信网络的基础。你手机里的芯片、5G基站、卫星导航，都在这个范畴里。',
+    intro: '电子信息类专业研究电路、芯片、信号处理和通信技术，是智能硬件和通信网络的基础。',
     examples: [
       '手机能同时打电话、上网、定位，靠的是射频芯片和信号处理技术',
       '智能家居（小米/华为生态）里每个设备互通，背后是嵌入式系统和通信协议',
@@ -885,7 +826,7 @@ const MAJORS = [
     name: '数学与统计类',
     scope: '数学、统计学、数据科学、金融数学、信息与计算科学',
     profile: [-4, -1, 0.5, 0.5],
-    intro: '数学类专业培养严密的逻辑推理和抽象建模能力。在当前大数据和AI时代，数学人才在金融、科技、互联网公司都非常抢手。',
+    intro: '数学类专业培养严密的逻辑推理和抽象建模能力。',
     examples: [
       '银行的风控模型判断你是否能获得贷款，背后是统计学和概率论',
       '推荐算法（抖音为什么总推你爱看的）底层是矩阵分解和优化理论',
@@ -897,7 +838,7 @@ const MAJORS = [
     name: '物理学类',
     scope: '物理学、应用物理、核工程、声学、量子信息',
     profile: [-4, -2, 0.5, -1],
-    intro: '物理学类探索自然世界最底层的规律，从量子纠缠到星系演化。物理学训练出的建模和数学能力在各个高精尖领域都有用武之地。',
+    intro: '物理学类探索自然世界最底层的规律，从量子纠缠到星系演化。',
     examples: [
       '芯片制造的极紫外光刻技术，本质上是在操控光的波长和干涉',
       '医院里的CT、MRI（核磁共振），原理都是物理学家发现的',
@@ -909,7 +850,7 @@ const MAJORS = [
     name: '化学与化工类',
     scope: '化学、应用化学、化学工程、高分子材料、能源化学',
     profile: [0, 0.5, 1, 1],
-    intro: '化学与化工类专业研究物质的组成、结构、性质和转化。从新药研发到新能源电池，从化妆品到半导体材料，化学无处不在。',
+    intro: '化学与化工类专业研究物质的组成、结构、性质和转化。',
     examples: [
       '电动汽车的锂电池能跑多远，取决于正负极材料和电解液的化学配方',
       '防晒霜里的二氧化钛纳米颗粒，是化学工程师设计出来的',
@@ -921,7 +862,7 @@ const MAJORS = [
     name: '生物类',
     scope: '生物科学、生物工程、生物信息学、生态学、食品科学',
     profile: [0.5, 2, 1, -0.5],
-    intro: '生物类专业研究生命的奥秘，从DNA双螺旋到生态系统。基因编辑、mRNA疫苗、人造肉……生物技术在深刻改变医疗、农业和食品工业。',
+    intro: '生物类专业研究生命的奥秘，从DNA双螺旋到生态系统。',
     examples: [
       '新冠疫情中火速研发的mRNA疫苗，核心技术是分子生物学',
       'DNA亲子鉴定和刑侦破案用的基因比对，原理来自生物信息学',
@@ -933,7 +874,7 @@ const MAJORS = [
     name: '医学类',
     scope: '临床医学、口腔医学、麻醉学、医学影像学、预防医学',
     profile: [0, 4, 2, 2],
-    intro: '医学类专业培养诊断和治疗疾病的能力，需要对人体结构和功能有深入理解。医生是终身学习的职业，经验越丰富越有价值。',
+    intro: '医学类专业培养诊断和治疗疾病的能力，需要对人体结构和功能有深入理解。',
     examples: [
       '外科医生做微创手术，通过几个小孔和腹腔镜屏幕完成复杂操作',
       '影像科医生看CT/MRI片子判断肿瘤位置，类似"人体侦探"',
@@ -945,7 +886,7 @@ const MAJORS = [
     name: '药学类',
     scope: '药学、药物制剂、中药学、临床药学、药事管理',
     profile: [0, 2, 1.5, 1],
-    intro: '药学类专业研究药物的发现、制备、分析和应用。从天然产物中提取有效成分，到在实验室设计全新的分子结构，药学连接化学、生物和医学。',
+    intro: '药学类专业研究药物的发现、制备、分析和应用。',
     examples: [
       '阿司匹林最初来自柳树皮提取物，化学家搞清楚了有效成分并实现了人工合成',
       '布洛芬止痛的原理是抑制体内的环氧化酶，减少致痛物质前列腺素的生成',
@@ -957,7 +898,7 @@ const MAJORS = [
     name: '机械与能动类',
     scope: '机械工程、能源与动力、车辆工程、航空航天、船舶工程',
     profile: [2, -3, -1, 1],
-    intro: '机械与能动类专业研究一切"会动的东西"——从发动机到机器人，从汽车到火箭。这是最经典的工程学科，强调力学分析和结构设计。',
+    intro: '机械与能动类专业研究一切"会动的东西"——从发动机到机器人，从汽车到火箭。',
     examples: [
       '汽车发动机把汽油的化学能变成车轮的动能，热力学和流体力学在起作用',
       '工业机器人手臂在工厂里焊接车身，精度达到0.1毫米，靠的是运动学和伺服控制',
@@ -969,7 +910,7 @@ const MAJORS = [
     name: '土木与建筑类',
     scope: '土木工程、建筑学、城乡规划、水利工程、交通工程',
     profile: [1, -2, -2, 0.5],
-    intro: '土木与建筑类专业设计和建造人类生活的物理空间——房屋、桥梁、道路、水坝。它结合了技术计算和空间美学，成果是能亲眼看到、亲手触摸的。',
+    intro: '土木与建筑类专业设计和建造人类生活的物理空间——房屋、桥梁、道路、水坝。',
     examples: [
       '港珠澳大桥能抗8级地震和16级台风，结构力学计算保证了它的安全',
       '你住的房子户型、采光、通风，是建筑师一笔一笔画出来的',
@@ -981,7 +922,7 @@ const MAJORS = [
     name: '材料类',
     scope: '材料科学与工程、冶金工程、无机非金属材料、高分子材料',
     profile: [0, -1.5, 2, 0.5],
-    intro: '材料类专业研究如何设计和制备新材料，从半导体硅片到航空发动机叶片。几乎每一次技术革命都离不开材料突破——芯片制程、电池容量、航天耐热，都是材料问题。',
+    intro: '材料类专业研究如何设计和制备新材料，从半导体硅片到航空发动机叶片。',
     examples: [
       '手机屏幕的钢化玻璃摔不碎，是化学强化改变了玻璃表面的应力分布',
       '航空发动机涡轮叶片要在1600°C下不熔化，靠的是镍基高温合金',
@@ -993,7 +934,7 @@ const MAJORS = [
     name: '环境与地理类',
     scope: '环境科学、地理信息科学、测绘工程、地质工程、大气科学',
     profile: [0, 0.5, -1, 1.5],
-    intro: '环境与地理类专业研究地球系统——大气、水、土壤、生态，以及人类活动对环境的影响。在气候变化和可持续发展的背景下，这个领域越来越重要。',
+    intro: '环境与地理类专业研究地球系统——大气、水、土壤、生态，以及人类活动对环境的影响。',
     examples: [
       '天气预报为什么越来越准？气象卫星+超级计算机+大气模型在背后工作',
       '手机导航告诉你前方堵车，是GIS（地理信息系统）在实时分析交通数据',
@@ -1002,20 +943,20 @@ const MAJORS = [
   }
 ];
 
-// Emoji mapping for each major: [main emoji, prop1, prop2, prop3, prop4]
+// Emoji mapping for each major: [main emoji, prop1, prop2]
 const MAJOR_EMOJIS = {
-  cs:        ['👨‍💻', '💻', '⌨️', '🖱️', '⚡'],
-  ee:        ['👨‍🔧', '📡', '🔌', '🛰️', '💡'],
-  math:      ['🧑‍🏫', '📐', '📊', '∑', '🔢'],
-  physics:   ['👨‍🔬', '⚛️', '🔭', '🌌', '💫'],
-  chemistry: ['🧑‍🔬', '🧪', '⚗️', '🧫', '🔥'],
-  bio:       ['🧑‍🌾', '🧬', '🔬', '🌱', '🐾'],
-  medicine:  ['👨‍⚕️', '🩺', '💊', '❤️', '🏥'],
-  pharmacy:  ['🧑‍⚕️', '💊', '🌿', '🧫', '⚕️'],
-  mechanical:['👷', '⚙️', '🔧', '🏗️', '🚗'],
-  civil:     ['👨‍🏭', '🏗️', '📏', '🏢', '🌉'],
-  materials: ['🧑‍🔬', '💎', '🔬', '🧱', '✨'],
-  env:       ['🧑‍🚀', '🌍', '🧭', '🌤️', '🌱']
+  cs:        ['👨‍💻', '💻', '⌨️'],
+  ee:        ['👨‍🔧', '📡', '🔌'],
+  math:      ['🧑‍🏫', '📐', '📊'],
+  physics:   ['👨‍🔬', '⚛️', '🔭'],
+  chemistry: ['🧑‍🔬', '🧪', '⚗️'],
+  bio:       ['🧑‍🌾', '🧬', '🔬'],
+  medicine:  ['👨‍⚕️', '🩺', '💊'],
+  pharmacy:  ['🧑‍⚕️', '💊', '🌿'],
+  mechanical:['👷', '⚙️', '🔧'],
+  civil:     ['👨‍🏭', '🏗️', '📏'],
+  materials: ['🧑‍🔬', '💎', '🔬'],
+  env:       ['🧑‍🚀', '🌍', '🧭']
 };
 
 // Maps dimension profile to readable description
@@ -1953,20 +1894,11 @@ function showResults() {
       section.style.display = 'block';
 
     const profileDesc = describeProfile(state.scores);
-    const dimNames = ['抽象↔具象', '物性↔生命', '系统↔细节', '创新↔规范'];
 
     // ── Header ──
     let html = '<div class="results-header fade-in">';
     html += '<h2>🎯 你的专业推荐</h2>';
     html += `<p class="summary-text">${profileDesc}</p>`;
-    html += '</div>';
-
-    // ── Dimension strip (ultra-compact) ──
-    html += '<div class="dim-strip fade-in">';
-    for (let d = 0; d < 4; d++) {
-      const pct = Math.max(5, Math.min(95, ((state.scores[d] + 8) / 16) * 90 + 5));
-      html += `<div class="dim-item"><span>${dimNames[d]}</span><div class="dim-bar"><div class="dim-fill" style="width:${pct}%"></div></div></div>`;
-    }
     html += '</div>';
 
     // ── Carousel ──
@@ -1976,31 +1908,30 @@ function showResults() {
     recs.forEach((major, idx) => {
       const rankLabel = ['🥇 第一推荐', '🥈 第二推荐', major._isDarkHorse ? '🎲 命运黑马' : '🥉 第三推荐'];
       const rankClass = ['r1', 'r2', major._isDarkHorse ? 'r3' : 'r3'];
-      const emoji = MAJOR_EMOJIS[major.id] || ['🎓', '📚', '🔍', '💡', '⭐'];
+      const emoji = MAJOR_EMOJIS[major.id] || ['🎓', '📚', '🔍'];
 
       html += '<div class="carousel-slide">';
 
-      // Emoji banner (horizontal strip)
+      // Emoji banner — 3 emojis only
       html += '<div class="emoji-banner">';
       html += `<span class="main-emoji">${emoji[0]}</span>`;
       html += `<div class="prop-row">`;
-      html += `<span>${emoji[1]}</span><span>${emoji[2]}</span><span>${emoji[3]}</span><span>${emoji[4]}</span>`;
+      html += `<span>${emoji[1]}</span><span>${emoji[2]}</span>`;
       html += `</div></div>`;
 
-      // Profession identity (rank + name + scope)
+      // Profession identity — rank + name only
       html += '<div class="prof-id">';
       html += `<div class="rank-badge ${rankClass[idx]}">${rankLabel[idx]}</div>`;
       html += `<div class="major-name">${major.name}</div>`;
-      html += `<div class="major-scope">📚 ${major.scope}</div>`;
       html += '</div>';
 
-      // Info card
+      // Info card — compact, no sub-headers
       html += '<div class="info-card">';
-      html += `<div class="match-reason">💡 ${getMatchReason(major, state.scores)}</div>`;
-      html += `<div class="major-intro">${major.intro}</div>`;
-      html += '<div class="major-examples"><h4>🔍 生活举例</h4><ul>';
-      major.examples.forEach(ex => { html += `<li>${ex}</li>`; });
-      html += '</ul></div></div>';
+      html += `<p class="match-reason">💡 ${getMatchReason(major, state.scores)}</p>`;
+      html += `<p class="major-intro">${major.intro}</p>`;
+      html += '<ul class="major-examples">';
+      major.examples.slice(0, 2).forEach(ex => { html += `<li>${ex}</li>`; });
+      html += '</ul></div>';
 
       // Share
       html += `<div class="slide-share"><button class="btn-share" onclick="generatePoster(${idx})">📸 分享此推荐</button></div>`;
@@ -2035,7 +1966,7 @@ function showResults() {
     section.classList.add('section-enter');
 
     // Stagger children: header → dims → carousel → disclaimer
-    const children = section.querySelectorAll('.results-header, .dim-strip, .carousel-wrap, .disclaimer');
+    const children = section.querySelectorAll('.results-header, .carousel-wrap, .disclaimer');
     children.forEach((el, i) => {
       el.style.opacity = '0';
       el.style.animation = `fadeInUp 0.45s cubic-bezier(0.4, 0, 0.2, 1) ${i * 80}ms forwards`;
@@ -2109,10 +2040,10 @@ function getMatchReason(major, scores) {
   // Dark horse: fate-driven pick, not a natural match — give a distinct reason
   if (major._isDarkHorse) {
     const fateReasons = [
-      `命运之轮为你打开了另一扇窗！${major.name}虽然与你的自然倾向不同，但人生有时候就需要一点出其不意——这个领域可能藏着你不曾发现的潜能。`,
-      `这是一次命运的"意外"推荐。${major.name}离你的舒适区有点距离，但正因如此，它可能带你看不一样的风景。`,
-      `谁说人生一定要按部就班？${major.name}是齿轮转出来的缘分，不妨认真了解一下，也许你会发现自己都没想到的兴趣。`,
-      `命运齿轮转出的黑马！${major.name}不在你的自然匹配区，但有时候最意外的方向反而会成为最好的选择。`
+      `命运之轮为你打开了另一扇窗——${major.name}或许藏着你不曾发现的潜能。`,
+      `一次命运的意外推荐！${major.name}离你的舒适区有点距离，但可能带你看不一样的风景。`,
+      `齿轮转出的缘分——${major.name}，不妨认真了解一下。`,
+      `最意外的方向，有时反而是最好的选择。`
     ];
     return fateReasons[Math.floor(Math.random() * fateReasons.length)];
   }
@@ -2157,11 +2088,10 @@ function generatePoster(index) {
   if (!major) return;
 
   const poster = document.getElementById('poster-capture');
-  const emoji = MAJOR_EMOJIS[major.id] || ['🎓', '📚', '🔍', '💡', '⭐'];
+  const emoji = MAJOR_EMOJIS[major.id] || ['🎓', '📚', '🔍'];
   const rankLabels = ['🥇 第一推荐', '🥈 第二推荐', '🥉 第三推荐'];
   const rankClass = ['r1', 'r2', major._isDarkHorse ? 'r3' : 'r3'];
   const rankLabel = major._isDarkHorse ? '🎲 命运黑马' : rankLabels[index];
-  const dimNames = ['抽象↔具象', '物性↔生命', '系统↔细节', '创新↔规范'];
   const reason = getMatchReason(major, state.scores);
 
   let html = '';
@@ -2177,32 +2107,22 @@ function generatePoster(index) {
   html += '<div class="p-emoji-row">';
   html += `<span class="p-main-emoji">${emoji[0]}</span>`;
   html += '<div class="p-props">';
-  html += `<span>${emoji[1]}</span><span>${emoji[2]}</span><span>${emoji[3]}</span><span>${emoji[4]}</span>`;
+  html += `<span>${emoji[1]}</span><span>${emoji[2]}</span>`;
   html += '</div></div>';
 
   // ── Identity ──
   html += '<div class="p-identity">';
   html += `<div class="p-rank ${rankClass}">${rankLabel}</div>`;
   html += `<div class="p-major-name">${major.name}</div>`;
-  html += `<div class="p-scope">📚 ${major.scope}</div>`;
   html += '</div>';
 
   // ── Info card ──
   html += '<div class="p-card">';
   html += `<div class="p-reason">💡 ${reason}</div>`;
   html += `<div class="p-intro">${major.intro}</div>`;
-  html += '<div class="p-examples-title">🔍 生活举例</div>';
   html += '<ul class="p-examples">';
-  major.examples.forEach(ex => { html += `<li>${ex}</li>`; });
+  major.examples.slice(0, 2).forEach(ex => { html += `<li>${ex}</li>`; });
   html += '</ul></div>';
-
-  // ── Dimension strip ──
-  html += '<div class="p-dims">';
-  for (let d = 0; d < 4; d++) {
-    const pct = Math.max(5, Math.min(95, ((state.scores[d] + 8) / 16) * 90 + 5));
-    html += `<div class="p-dim-item"><span>${dimNames[d]}</span><div class="p-dim-bar"><div class="p-dim-fill" style="width:${pct}%"></div></div></div>`;
-  }
-  html += '</div>';
 
   // ── Footer with QR ──
   html += '<div class="p-footer">';
